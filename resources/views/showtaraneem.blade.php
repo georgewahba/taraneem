@@ -74,16 +74,6 @@
                 elem.msRequestFullscreen();
             }
 
-        function closeFullscreen() {
-            if (document.exitFullscreen) {
-                document.exitFullscreen();
-            } else if (document.webkitExitFullscreen) { /* Safari */
-                document.webkitExitFullscreen();
-            } else if (document.msExitFullscreen) { /* IE11 */
-                document.msExitFullscreen();
-            }
-        }
-
             // Remove the filter after going into fullscreen
             var filter = document.getElementById("filter");
             filter.style.display = "none";
@@ -101,7 +91,7 @@
             if (event.keyCode == 39) {
             i++;
             if (i >= textarray.length) {
-                closeFullscreen();
+                i = textarray.length - 1;
             }
             textdisplay = textarray[i].split("@");
             document.getElementById("visibletext").innerHTML = textdisplay.join("<br>");
