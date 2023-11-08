@@ -35,8 +35,9 @@ Route::get('/addtaraneem', function () {
 Route::get('/edittaraneem/{taraneem}', [TaraneemController::class, 'edit'])->name('taraneem.edit')->middleware(['auth', 'verified']);
 Route::get('/deletetaraneem/{taraneem}', [TaraneemController::class, 'destroy'])->name('taraneem.destroy')->middleware(['auth', 'verified']);
 Route::post('/storetaraneem', [TaraneemController::class, 'store'])->name('storetaraneem');
-
 Route::post('/updatetaraneem/{taraneem}', [TaraneemController::class, 'update'])->name('taraneem.update')->middleware(['auth', 'verified']);
+
+Route::get('/browseall', [TaraneemController::class, 'browseall'])->name('browseall');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

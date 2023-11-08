@@ -16,6 +16,7 @@
                     <table class="w-full border-collapse border border-gray-300 mt-4">
                         <thead>
                             <tr>
+                                <th class="py-2 px-3 bg-gray-200">Id</th>
                                 <th class="py-2 px-3 bg-gray-200">Title</th>
                                 <th class="py-2 px-3 bg-gray-200">Lyrics</th>
                                 <th class="py-2 px-3 bg-gray-200">Actions</th>
@@ -24,6 +25,7 @@
                         <tbody>
                             @foreach($taraneem as $taraneem)
                             <tr>
+                                <td class="py-2 px-3 border">{{ $taraneem->id }}</td>
                                 <td class="py-2 px-3 border">{{ $taraneem->titel }}</td>
                                 <td class="py-2 px-3 border">{{ substr($taraneem->lyrics, 0, 50) }}{{ strlen($taraneem->lyrics) > 50 ? '...' : '' }}</td>
                                 <td class="py-2 px-3 border">

@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 class TaraneemController extends Controller
 {
     public function index(){
-        $taraneem = Taraneem::all();
+        $taraneem = Taraneem::all()->sortBy('title');
         return view('taraneem', compact('taraneem'));
     }
 
@@ -49,4 +49,9 @@ class TaraneemController extends Controller
         return redirect("/taraneem");
     }
     
+
+    public function browseall(){
+        $taraneem = Taraneem::all()->sortBy('title');
+        return view('browseall', compact('taraneem'));
+    }
 }

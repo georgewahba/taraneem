@@ -3,8 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Home</title>
+    <title>Browse All Taraneem</title>
     <style>
+        /* Use the same style as in your previous HTML */
         body {
             font-family: Arial, sans-serif;
             background-color: #121826;
@@ -15,12 +16,12 @@
             flex-direction: column;
             align-items: center;
             text-align: center;
-            height: 100vh; /* Make the body take the full viewport height */
-            justify-content: flex-start; /* Align content to the top */
+            height: 100vh;
+            justify-content: flex-start;
         }
 
         h1 {
-            margin-top: 70px; /* Adjust the top margin to create space for the fixed navbar */
+            margin-top: 70px;
         }
 
         #filter_form {
@@ -34,12 +35,12 @@
             background-color: #121826;
             color: #fff;
             font-size: 16px;
-            width: 80%; /* Adjust the width as needed */
+            width: 80%;
         }
 
         p {
-            display: none; /* Initially hide the list of taraneem */
-            text-align: left; /* Align the text to the left */
+            display: block;
+            text-align: left;
             margin-top: 20px;
             font-size: 18px;
         }
@@ -67,7 +68,7 @@
             position: absolute;
             top: 40px;
             left: 10px;
-            background: #333; /* Dark background color */
+            background: #333;
             border: 1px solid #666;
             padding: 10px;
             z-index: 1;
@@ -89,7 +90,6 @@
     </style>
 </head>
 <body>
-
     <div class="menu-icon" id="menu-icon" onclick="toggleMenu()">&#9776;</div>
     <div class="menu" id="menu">
         <ul>
@@ -98,58 +98,26 @@
         </ul>
     </div>
 
-    <h1>Welcome to the Taraneem Page</h1>
-
-    <form id="filter_form">
-        <label for="filter">Search:</label>
-        <input id="filter" name="filter" type="text" size="40" onkeyup="filter_pictures();">
-    </form>
+    <h1>Browse All Taraneem</h1>
 
     <p id="taraneemList">
-        @foreach ($taraneem as $tarnima)
+        <!-- Display the taraneem list sorted by title in alphabetical order -->
+        @foreach ($taraneem->sortBy('titel') as $tarnima)
             <a class="filtered" href="tarnima/{{$tarnima->id}}">{{$tarnima->titel}}</a><br>
         @endforeach
     </p>
 
     <script>
-        function filter_pictures() {
-            var $filter = document.getElementById('filter').value.trim().toLowerCase();
-            var $taraneemList = document.getElementById('taraneemList');
-    
-            // Hide all items initially
-            for (var i = 0; i < $taraneemList.children.length; i++) {
-                $taraneemList.children[i].style.display = 'none';
-            }
-    
-            if ($filter === '') {
-                // If the filter is empty, hide the list
-                $taraneemList.style.display = 'none';
-            } else {
-                // Show the list
-                $taraneemList.style.display = 'block';
-    
-                // Filter and display matching results
-                for (var i = 0; i < $taraneemList.children.length; i++) {
-                    var link = $taraneemList.children[i];
-                    var linkText = link.textContent.toLowerCase();
-                    if (linkText.includes($filter)) {
-                        link.style.display = 'block';
-                    }
-                }
-            }
-        }
-
         document.getElementById("menu").style.display = "none";
 
-        function toggleMenu() {
-            var menu = document.getElementById("menu");
-            if (menu.style.display === "block") {
-                menu.style.display = "none";
-            } else {
-                menu.style.display = "block";
-            }
-        }
+function toggleMenu() {
+    var menu = document.getElementById("menu");
+    if (menu.style.display === "block") {
+        menu.style.display = "none";
+    } else {
+        menu.style.display = "block";
+    }
+}
     </script>
-    
 </body>
 </html>
