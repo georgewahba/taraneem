@@ -29,6 +29,19 @@
             line-height: 2.8;
         }
 
+        @media (max-width: 768px) {
+            body {
+                font-size: 24px; /* Smaller font size for mobile */
+                line-height: 1.4; /* Smaller line spacing for mobile */
+            }
+
+            #visibletext {
+                font-size: 28px; /* Smaller font size for mobile */
+                margin: 20px; /* Reduced margin for mobile */
+                line-height: 1.8; /* Smaller line spacing for mobile */
+            }
+        }
+
         #text {
             display: none;
         }
