@@ -4,7 +4,7 @@
 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Search</title>
+    <title>Taraneem</title>
     <link rel="icon" type="image/png" href="{{ asset('images/mini-logo.png') }}" sizes="32x32">
     
     <!-- Apple Touch Icon for Safari on iOS devices -->
@@ -16,6 +16,8 @@
     <link rel="icon" type="image/png" href="{{ asset('images/mini-logo.png') }}" sizes="192x192">
     <link rel="icon" type="image/png" href="{{ asset('images/mini-logo.png') }}" sizes="512x512">
     
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -46,7 +48,9 @@
             background-color: #121826;
             color: #fff;
             font-size: 16px;
-            width: 80%; /* Adjust the width as needed */
+            width: 90%; /* Adjust the width as needed */
+
+            font-family:Arial, FontAwesome
         }
 
         p {
@@ -60,6 +64,7 @@
             color: #fff;
             text-decoration: none;
             margin:10px;
+            background: url("http://kodyrabatowe.wp.pl/img/ico/search_gr.png") top left     no-repeat;
         }
 
         a.filtered:hover {
@@ -127,7 +132,7 @@
     <div id="header">
         <img id="logo" src="{{ asset('images/full-logo.png') }}" alt="">
         <form id="filter_form">
-            <input id="filter" name="filter" type="text" size="40" onkeyup="filter_pictures();" placeholder="Search">
+            <input id="filter" name="filter" type="text" size="40" onkeyup="filter_pictures();" placeholder="&#xF002;">
         </form>
     </div>
 
