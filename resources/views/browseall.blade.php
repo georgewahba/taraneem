@@ -4,6 +4,19 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Browse All Taraneem</title>
+
+    <link rel="icon" type="image/png" href="{{ asset('images/mini-logo.png') }}" sizes="32x32">
+    
+    <!-- Apple Touch Icon for Safari on iOS devices -->
+    <link rel="apple-touch-icon" sizes="180x180" href="{{ asset('images/mini-logo.png') }}">
+    <link rel="mask-icon" href="{{ asset('images/mini-logo.png') }}">
+    
+    <!-- Favicon for Safari on non-iOS devices -->
+    <link rel="icon" type="image/png" href="{{ asset('images/mini-logo.png') }}" sizes="32x32">
+    <link rel="icon" type="image/png" href="{{ asset('images/mini-logo.png') }}" sizes="192x192">
+    <link rel="icon" type="image/png" href="{{ asset('images/mini-logo.png') }}" sizes="512x512">
+    
+
     <style>
         /* Use the same style as in your previous HTML */
         body {
