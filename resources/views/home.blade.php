@@ -4,6 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Home</title>
+
+    <!-- Standard favicon for most browsers -->
+    <link rel="icon" type="image/png" href="{{ asset('images/mini-logo.png') }}" sizes="32x32">
+
+    <!-- Apple Touch Icon for Safari on iOS devices (including iPads) -->
+    <link rel="apple-touch-icon" sizes="180x180" href="{{ asset('images/mini-logo.png') }}">
+
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -87,6 +94,20 @@
             text-decoration: none;
             color: #fff;
         }
+
+        #header {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            margin-top: 70px;
+        }
+
+        #logo {
+            width: 350px; /* Adjust the width as needed to make the logo smaller */
+            height: auto;
+            margin-bottom: 0px; /* Add some margin below the logo */
+        }
     </style>
 </head>
 <body>
@@ -99,12 +120,12 @@
         </ul>
     </div>
 
-    <h1>Welcome to the Taraneem Page</h1>
-
-    <form id="filter_form">
-        <label for="filter">Search:</label>
-        <input id="filter" name="filter" type="text" size="40" onkeyup="filter_pictures();">
-    </form>
+    <div id="header">
+        <img id="logo" src="{{ asset('images/full-logo.png') }}" alt="">
+        <form id="filter_form">
+            <input id="filter" name="filter" type="text" size="40" onkeyup="filter_pictures();" placeholder="Search">
+        </form>
+    </div>
 
     <p id="taraneemList">
         @foreach ($taraneem as $tarnima)
