@@ -9,7 +9,7 @@
     
     <!-- Apple Touch Icon for Safari on iOS devices -->
     <link rel="apple-touch-icon" sizes="180x180" href="{{ asset('images/mini-logo.png') }}">
-    <link rel="mask-icon" href="{{ asset('images/mini-logo.png') }}" color="#000000">
+    <link rel="mask-icon" href="{{ asset('images/mini-logo.png') }}">
     
     <!-- Favicon for Safari on non-iOS devices -->
     <link rel="icon" type="image/png" href="{{ asset('images/mini-logo.png') }}" sizes="32x32">
