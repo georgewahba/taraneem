@@ -47,6 +47,7 @@
         a.filtered {
             color: #fff;
             text-decoration: none;
+            margin:10px;
         }
 
         a.filtered:hover {
