@@ -5,14 +5,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Search</title>
-    <link rel="icon" type="image/png" href="{{ asset('images/mini-logo.png') }}">
-
-    <!-- Standard favicon for most browsers -->
     <link rel="icon" type="image/png" href="{{ asset('images/mini-logo.png') }}" sizes="32x32">
-
-    <!-- Apple Touch Icon for Safari on iOS devices (including iPads) -->
+    
+    <!-- Apple Touch Icon for Safari on iOS devices -->
     <link rel="apple-touch-icon" sizes="180x180" href="{{ asset('images/mini-logo.png') }}">
-
+    <link rel="mask-icon" href="{{ asset('images/mini-logo.png') }}" color="#000000">
+    
+    <!-- Favicon for Safari on non-iOS devices -->
+    <link rel="icon" type="image/png" href="{{ asset('images/mini-logo.png') }}" sizes="32x32">
+    <link rel="icon" type="image/png" href="{{ asset('images/mini-logo.png') }}" sizes="192x192">
+    <link rel="icon" type="image/png" href="{{ asset('images/mini-logo.png') }}" sizes="512x512">
+    
     <style>
         body {
             font-family: Arial, sans-serif;
