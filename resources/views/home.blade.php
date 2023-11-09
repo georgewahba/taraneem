@@ -1,9 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Home</title>
+    <title>Search</title>
+    <link rel="icon" type="image/png" href="{{ asset('images/mini-logo.png') }}">
 
     <!-- Standard favicon for most browsers -->
     <link rel="icon" type="image/png" href="{{ asset('images/mini-logo.png') }}" sizes="32x32">
@@ -111,7 +113,6 @@
     </style>
 </head>
 <body>
-
     <div class="menu-icon" id="menu-icon" onclick="toggleMenu()">&#9776;</div>
     <div class="menu" id="menu">
         <ul>
