@@ -43,7 +43,7 @@ var textdisplay = textarray[i].split("@");
 document.getElementById("visibletext").innerHTML = textdisplay.join("<br>"); // Join with <br> to display sentences on separate lines
 
 document.addEventListener('keydown', function (event) {
-    if (event.keyCode == 39 || event.keyCode == 40) {
+    if (event.keyCode == 39 || event.keyCode == 40 || event.keyCode == 34) {
         i++;
         if (i >= textarray.length) {
             i = textarray.length - 1;
@@ -55,7 +55,7 @@ document.addEventListener('keydown', function (event) {
         document.getElementById("visibletext").innerHTML = textdisplay.join("<br>");
     }
 
-    if (event.keyCode == 37 || event.keyCode == 38) {
+    if (event.keyCode == 37 || event.keyCode == 38 || event.keyCode == 33) {
         i--;
         if (i < 0) {
             i = 0;
