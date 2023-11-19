@@ -1,30 +1,24 @@
 function filter_pictures() {
-    var filter = document.getElementById('filter').value.trim().toLowerCase();
-    var taraneemList = document.getElementById('taraneemList');
+    var $filter = document.getElementById('filter').value.trim().toLowerCase();
+    var $taraneemList = document.getElementById('taraneemList');
 
     // Hide all items initially
-    for (var i = 0; i < taraneemList.children.length; i++) {
-        taraneemList.children[i].style.display = 'none';
+    for (var i = 0; i < $taraneemList.children.length; i++) {
+        $taraneemList.children[i].style.display = 'none';
     }
 
-    if (filter === '') {
+    if ($filter === '') {
         // If the filter is empty, hide the list
-        taraneemList.style.display = 'none';
+        $taraneemList.style.display = 'none';
     } else {
         // Show the list
-        taraneemList.style.display = 'block';
+        $taraneemList.style.display = 'block';
 
         // Filter and display matching results
-        for (var i = 0; i < taraneemList.children.length; i++) {
-            var link = taraneemList.children[i];
-            var linkTitle = link.textContent.toLowerCase();
-            var linkLyricsAttribute = link.getAttribute('tekst');
-
-            // Check if the attribute exists and then convert to lowercase
-            var linkLyrics = linkLyricsAttribute ? linkLyricsAttribute.toLowerCase() : '';
-
-            // Check if the filter matches the title or lyrics
-            if (linkTitle.includes(filter) || linkLyrics.includes(filter)) {
+        for (var i = 0; i < $taraneemList.children.length; i++) {
+            var link = $taraneemList.children[i];
+            var linkText = link.textContent.toLowerCase();
+            if (linkText.includes($filter)) {
                 link.style.display = 'block';
             }
         }
