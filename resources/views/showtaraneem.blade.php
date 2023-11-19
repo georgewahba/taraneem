@@ -17,6 +17,9 @@
     <div>
         <p id="visibletext"></p>
     </div>
+
+    <div id="pageInfo">
+    </div>
 <script src="{{ asset('js/show.js') }}"></script>
 </body>
 </html>

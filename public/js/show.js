@@ -39,6 +39,16 @@ document.addEventListener('click', function () {
     openFullscreen();
 });
 
+var pageInfo = document.getElementById("pageInfo");
+
+// Function to update page information
+function updatePageInfo() {
+    pageInfo.innerHTML = (i + 1) + " / " + textarray.length;
+}
+
+// Initial update
+updatePageInfo();
+
 var textdisplay = textarray[i].split("@");
 document.getElementById("visibletext").innerHTML = textdisplay.join("<br>"); // Join with <br> to display sentences on separate lines
 
@@ -53,6 +63,7 @@ document.addEventListener('keydown', function (event) {
         }
         textdisplay = textarray[i].split("@");
         document.getElementById("visibletext").innerHTML = textdisplay.join("<br>");
+        updatePageInfo();
     }
 
     if (event.keyCode == 37 || event.keyCode == 38 || event.keyCode == 33) {
@@ -62,6 +73,7 @@ document.addEventListener('keydown', function (event) {
         }
         textdisplay = textarray[i].split("@");
         document.getElementById("visibletext").innerHTML = textdisplay.join("<br>");
+        updatePageInfo();
     }
 
     if (event.keyCode === 27) { // 27 is the key code for the 'Esc' key
@@ -110,6 +122,7 @@ function handleTouchMove(evt) {
             }
             textdisplay = textarray[i].split("@");
             document.getElementById("visibletext").innerHTML = textdisplay.join("<br>");
+            updatePageInfo();
         } else {
             i--;
             if (i < 0) {
@@ -117,9 +130,49 @@ function handleTouchMove(evt) {
             }
             textdisplay = textarray[i].split("@");
             document.getElementById("visibletext").innerHTML = textdisplay.join("<br>");
+            updatePageInfo();
         }
     }
 
     xDown = null;
     yDown = null;
 };
+
+
+var cursorVisible = true;
+var cursorTimeout;
+
+// Function to hide the cursor after a certain period of inactivity
+function hideCursor() {
+    document.documentElement.style.cursor = "none";
+    cursorVisible = false;
+}
+
+// Function to show the cursor
+function showCursor() {
+    document.documentElement.style.cursor = "auto";
+    cursorVisible = true;
+}
+
+// Function to reset the cursor timeout
+function resetCursorTimeout() {
+    if (cursorTimeout) {
+        clearTimeout(cursorTimeout);
+    }
+    cursorTimeout = setTimeout(hideCursor, 3000); // Hide cursor after 3 seconds of inactivity
+}
+
+document.addEventListener('mousemove', function (event) {
+    event.preventDefault(); // Prevent default behavior
+    showCursor();
+    resetCursorTimeout();
+});
+
+// Listen for touchstart event to reset the cursor timeout and show the cursor
+document.addEventListener('touchstart', function () {
+    showCursor();
+    resetCursorTimeout();
+});
+
+// Initial setup to hide the cursor after 3 seconds of inactivity
+resetCursorTimeout();

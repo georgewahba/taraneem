@@ -53,3 +53,12 @@ body {
     justify-content: center;
     align-items: center;
 }
+
+#pageInfo {
+    position: fixed;
+    bottom: 10px;
+    left: 10px;
+    font-size: 14px;
+    color: #fff;
+    opacity: 0.7;
+}
