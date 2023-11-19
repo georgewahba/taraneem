@@ -24,3 +24,66 @@ if (!menu.contains(event.target) && event.target !== menuIcon && menu.style.disp
 document.getElementById("menu").addEventListener('click', function(event) {
 event.stopPropagation();
 });
+
+function showAll() {
+    removeLineBreaks()
+    var taraneemList = document.getElementById("taraneemList").getElementsByTagName("a");
+
+    for (var i = 0; i < taraneemList.length; i++) {
+        taraneemList[i].style.display = "block";
+    }
+    reorderDisplayBlock()
+
+}
+
+function filterByLetter(letter) {
+    removeLineBreaks()
+    var taraneemList = document.getElementById("taraneemList").getElementsByTagName("a");
+
+    for (var i = 0; i < taraneemList.length; i++) {
+        var title = taraneemList[i].innerText.toUpperCase();
+
+        if (letter === '#') {
+            if (/^[^A-Z]/.test(title)) {
+                taraneemList[i].style.display = "block";
+            } else {
+                taraneemList[i].style.display = "none";
+            }
+        } else if (title.startsWith(letter)) {
+            taraneemList[i].style.display = "block";
+        } else {
+            taraneemList[i].style.display = "none";
+        }
+    }
+    reorderDisplayBlock()
+}
+
+function reorderDisplayBlock() {
+    var taraneemList = document.getElementById("taraneemList");
+    var displayBlockItems = [];
+  
+    // Separate display block and display none items
+    for (var i = 0; i < taraneemList.children.length; i++) {
+      var item = taraneemList.children[i];
+      if (item.style.display === "block") {
+        displayBlockItems.push(item);
+        item.style.display = "none"; // Hide the item for now
+      }
+    }
+  
+    // Append display block items to the top with line breaks
+    displayBlockItems.forEach(function (item) {
+      taraneemList.insertBefore(item, taraneemList.firstChild);
+      taraneemList.insertBefore(document.createElement('br'), taraneemList.firstChild); // Add line break
+      item.style.display = "block"; // Show the item
+    });
+  }
+  
+  function removeLineBreaks() {
+    var taraneemList = document.getElementById("taraneemList");
+    var lineBreaks = taraneemList.getElementsByTagName("br");
+  
+    for (var i = 0; i < lineBreaks.length; i++) {
+      lineBreaks[i].parentNode.removeChild(lineBreaks[i]);
+    }
+  }

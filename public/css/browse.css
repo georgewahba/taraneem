@@ -40,6 +40,7 @@ p {
 a.filtered {
     color: #fff;
     text-decoration: none;
+    display: block;
 }
 
 a.filtered:hover {
@@ -87,3 +88,22 @@ a.filtered:hover {
     text-decoration: underline;
     color: #f4ca92; /* Change the hover color */
 }
+
+#letter-row {
+    display: flex;
+    justify-content: center;
+    margin-top: 10px;
+    flex-wrap: wrap; /* Allow the letters to wrap to the next line */
+  }
+  
+  #letter-row a {
+    margin: 0 5px;
+    color: #fff;
+    text-decoration: none;
+  }
+  
+  @media (max-width: 600px) {
+    #letter-row a {
+      margin: 5px; /* Adjust margin for better spacing on smaller screens */
+    }
+  }
