@@ -38,11 +38,10 @@
 
     <p id="taraneemList">
         @foreach ($taraneem as $tarnima)
-            <a class="filtered" href="tarnima/{{$tarnima->id}}">{{$tarnima->titel}}</a><br>
+            <a class="filtered" href="tarnima/{{$tarnima->id}}" tekst="{{$tarnima->lyrics}}">{{$tarnima->titel}}</a><br>
         @endforeach
     </p>
 
     <script src="{{ asset('js/home.js') }}"></script>
-    
 </body>
 </html>
