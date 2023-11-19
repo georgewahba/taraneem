@@ -29,9 +29,14 @@
     </div>
 
     <h1>Browse All Taraneem</h1>
-
+    <div id="letter-row">
+        <a href="#" onclick="showAll()">All</a>
+        <a href="#" onclick="filterByLetter('#')"> # </a>
+        @foreach (range('A', 'Z') as $letter)
+            <a href="#" onclick="filterByLetter('{{$letter}}')">{{$letter}}</a>
+        @endforeach
+    </div>
     <p id="taraneemList">
-        <!-- Display the taraneem list sorted by title in alphabetical order -->
         @foreach ($taraneem->sortBy('titel') as $tarnima)
             <a class="filtered" href="tarnima/{{$tarnima->id}}">{{$tarnima->titel}}</a><br>
         @endforeach
