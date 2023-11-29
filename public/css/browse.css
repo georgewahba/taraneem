@@ -102,7 +102,7 @@ a.filtered:hover {
     text-decoration: none;
   }
   
-  @media (max-width: 600px) {
+    @media (max-width: 600px) {
     #letter-row a {
       margin: 5px; /* Adjust margin for better spacing on smaller screens */
     }

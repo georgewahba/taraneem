@@ -6,12 +6,19 @@ document.getElementById("visibletext").innerHTML = textarray[i];
 
 // Function to request fullscreen
 function openFullscreen() {
-    if (elem.requestFullscreen) {
-        elem.requestFullscreen();
-    } else if (elem.webkitRequestFullscreen) { /* Safari */
-        elem.webkitRequestFullscreen();
-    } else if (elem.msRequestFullscreen) { /* IE11 */
-        elem.msRequestFullscreen();
+    // Check if the document is already in fullscreen
+    if (
+        !document.fullscreenElement &&
+        !document.webkitFullscreenElement &&
+        !document.msFullscreenElement
+    ) {
+        if (elem.requestFullscreen) {
+            elem.requestFullscreen();
+        } else if (elem.webkitRequestFullscreen) { /* Safari */
+            elem.webkitRequestFullscreen();
+        } else if (elem.msRequestFullscreen) { /* IE11 */
+            elem.msRequestFullscreen();
+        }
     }
 
     // Remove the filter after going into fullscreen
