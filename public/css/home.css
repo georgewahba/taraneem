@@ -104,3 +104,28 @@ a.filtered:hover {
     height: auto;
     margin-bottom: 0px; /* Add some margin below the logo */
 }
+#footer {
+    margin-top: auto;
+    margin-bottom: 10px;
+    padding: 10px;
+    background-color: #2d3a5a; /* Darker background color */
+    border: 2px solid #ffffff; /* Dark border */
+    border-radius: 10px; /* Add border-radius for a rounded appearance */
+}
+
+footer {
+    width: 100%;
+    padding: 10px;
+    height: 30px;
+    margin-top: auto; /* Push the footer to the bottom */
+    background-color: #2d3a5a;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+footer a {
+    color: #fff;
+    text-decoration: none;
+    font-size: 16px;
+}

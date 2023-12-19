@@ -2,9 +2,11 @@
 
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\SuggestionsController;
 use App\Http\Controllers\TaraneemController;
 use App\Models\Taraneem;
 use Illuminate\Support\Facades\Route;
+use Symfony\Component\Console\Completion\Suggestion;
 
 /*
 |--------------------------------------------------------------------------
@@ -38,6 +40,12 @@ Route::post('/storetaraneem', [TaraneemController::class, 'store'])->name('store
 Route::post('/updatetaraneem/{taraneem}', [TaraneemController::class, 'update'])->name('taraneem.update')->middleware(['auth', 'verified']);
 
 Route::get('/browseall', [TaraneemController::class, 'browseall'])->name('browseall');
+
+Route::get('/suggestion', [SuggestionsController::class, 'index'])->name('suggestion');
+Route::post('/storesuggestion', [SuggestionsController::class, 'store'])->name('storesuggestion');
+Route::get('/suggestedtaraneem', [SuggestionsController::class, 'suggestedtaraneem'])->name('suggestedtaraneem')->middleware(['auth', 'verified']);
+Route::get('/showsuggested/{suggestion}', [SuggestionsController::class, 'showsuggested'])->name('showsuggested')->middleware(['auth', 'verified']);
+Route::get('/deletesuggested/{suggestion}', [SuggestionsController::class, 'destroy'])->name('suggestion.destroy')->middleware(['auth', 'verified']);
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

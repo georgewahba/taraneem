@@ -21,6 +21,11 @@
     <link rel="stylesheet" href="{{ asset('css/home.css') }}">
 </head>
 <body>
+    @if(session('success'))
+    <div class="alert alert-success">
+        {{ session('success') }}
+    </div>
+    @endif
     <div class="menu-icon" id="menu-icon" onclick="toggleMenu()">&#9776;</div>
     <div class="menu" id="menu">
         <ul>
@@ -41,6 +46,10 @@
             <a class="filtered" href="tarnima/{{$tarnima->id}}">{{$tarnima->titel}}</a><br>
         @endforeach
     </p>
+
+    <footer>
+        <a href="/suggestion">Staat er een tarnima niet tussen maar wil je die er wel tussen zien, doe HIER een suggestie</a>
+    </footer>
 
     <script src="{{ asset('js/home.js') }}"></script>
     
