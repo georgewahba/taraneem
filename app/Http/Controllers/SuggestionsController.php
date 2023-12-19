@@ -23,7 +23,8 @@ class SuggestionsController extends Controller
         $suggestion->lyrics = $request->lyrics;
         $suggestion->save();
         
-        return redirect("/")->with('success', 'Suggestion added successfully.');
+        toastr()->success('Jouw suggestie is opgeslagen. Bedankt voor je bijdrage!');
+        return redirect("/");
     }
 
     public function suggestedtaraneem()
