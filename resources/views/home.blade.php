@@ -48,7 +48,7 @@
     </p>
 
     <footer>
-        <a href="/suggestion">Staat er een tarnima niet tussen maar wil je die er wel tussen zien, doe HIER een suggestie</a>
+        <a href="/suggestion">Staat er een tarnima niet tussen maar wil je die er wel tussen zien of zie je een fout in een tekst, doe HIER een suggestie</a>
     </footer>
 
     <script src="{{ asset('js/home.js') }}"></script>
