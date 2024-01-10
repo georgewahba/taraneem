@@ -116,7 +116,7 @@ a.filtered:hover {
 footer {
     width: 100%;
     padding: 10px;
-    height: 40px;
+    height: 41px;
     margin-top: auto; /* Push the footer to the bottom */
     background-color: #2d3a5a;
     display: flex;
