@@ -6,7 +6,8 @@
     <title>Browse All Taraneem</title>
 
     <link rel="icon" type="image/png" href="{{ asset('images/mini-logo.png') }}" sizes="32x32">
-    
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+
     <!-- Apple Touch Icon for Safari on iOS devices -->
     <link rel="apple-touch-icon" sizes="180x180" href="{{ asset('images/mini-logo.png') }}">
     <link rel="mask-icon" href="{{ asset('images/mini-logo.png') }}">
