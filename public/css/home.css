@@ -117,7 +117,7 @@ footer {
     width: 100%;
     padding: 10px;
     height: 40px;
-    margin-top: auto; /* Push the footer to the bottom */
+    margin-top: auto;
     background-color: #2d3a5a;
     display: flex;
     justify-content: center;
