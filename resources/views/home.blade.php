@@ -35,12 +35,22 @@
         </ul>
     </div>
 
+    {{-- This is the switch for the theme --}}
+    <div id="theme-toggle" style="position: fixed; top: 10px; right: 10px;">
+        <label for="theme-checkbox">Theme</label>
+        <label class="switch">
+            <input type="checkbox" id="theme-checkbox">
+            <span class="slider round"></span>
+        </label>
+    </div>
+
     <div id="header">
         <img id="logo" src="{{ asset('images/full-logo.png') }}" alt="">
         <form id="filter_form">
             <input id="filter" name="filter" type="text" size="40" onkeyup="filter_pictures();" placeholder="&#xF002;">
         </form>
     </div>
+    
 
     <p id="taraneemList">
         @foreach ($taraneem as $tarnima)

@@ -51,3 +51,27 @@ if (!menu.contains(event.target) && event.target !== menuIcon && menu.style.disp
 document.getElementById("menu").addEventListener('click', function(event) {
 event.stopPropagation();
 });
+
+
+document.addEventListener('DOMContentLoaded', function() {
+    // Get the toggle switch element
+    const themeCheckbox = document.getElementById('theme-checkbox');
+
+    // Function to handle when the toggle switch is changed
+    function handleToggleChange() {
+        // Save the state of the toggle switch in session storage
+        sessionStorage.setItem('themeChecked', themeCheckbox.checked);
+    }
+
+    // Add event listener for the change event on the toggle switch
+    themeCheckbox.addEventListener('change', handleToggleChange);
+
+    // Check if there's a saved state in sessionStorage and update the toggle accordingly
+    const storedThemeChecked = sessionStorage.getItem('themeChecked');
+    if (storedThemeChecked !== null) {
+        themeCheckbox.checked = storedThemeChecked === 'true';
+    }
+
+    // Call the function initially to save the initial state (if any)
+    handleToggleChange();
+});
