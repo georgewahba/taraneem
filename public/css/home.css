@@ -166,9 +166,10 @@ footer a {
     left: 0;
     right: 0;
     bottom: 0;
-    background-color: #ccc;
+    background-color: #3a435a;
     -webkit-transition: .4s;
     transition: .4s;
+    border: white 1px solid;
 }
 
 .slider:before {
@@ -176,19 +177,19 @@ footer a {
     content: "";
     height: 26px;
     width: 26px;
-    left: 4px;
-    bottom: 4px;
+    left: 3px;
+    bottom: 2.5px;
     background-color: white;
     -webkit-transition: .4s;
     transition: .4s;
 }
 
 input:checked + .slider {
-    background-color: #2196F3;
+    background-color: #202a42;
 }
 
 input:focus + .slider {
-    box-shadow: 0 0 1px #2196F3;
+    box-shadow: 0 0 1px #202a42;
 }
 
 input:checked + .slider:before {
