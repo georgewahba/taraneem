@@ -27,12 +27,12 @@ class SuggestionsController extends Controller
         
         toastr()->success('Jouw suggestie is opgeslagen. Bedankt voor je bijdrage!');
 
-        $MailData = [
-            'title' => 'Email From Taraneem.nlh',
-            'body' => 'Er is een nieuwe suggestie toegevoegd. Ga naar https://www.taraneem.nl/suggestedtaraneem de website om het te bekijken.'
-        ];
+        // $MailData = [
+        //     'title' => 'Email From Taraneem.nlh',
+        //     'body' => 'Er is een nieuwe suggestie toegevoegd. Ga naar https://www.taraneem.nl/suggestedtaraneem de website om het te bekijken.'
+        // ];
 
-        Mail::to("george-wahba@hotmail.com")->send(new SendMail($MailData));
+        // Mail::to("george-wahba@hotmail.com")->send(new SendMail($MailData));
 
 
         return redirect("/");
