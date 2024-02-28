@@ -7,30 +7,52 @@
 
     <title>{{$taraneem->titel}}</title>
     <script>
-        // Check if the toggle switch was checked
-        const themeChecked = sessionStorage.getItem('themeChecked');
-    
-        if (themeChecked === 'true') {
-            // Define an array of theme file paths
-            const themes = [
-                '{{ asset('css/themes/theme-1.css') }}',
-                '{{ asset('css/themes/theme-2.css') }}',
-                '{{ asset('css/themes/theme-3.css') }}',
-                '{{ asset('css/themes/theme-4.css') }}',
-                '{{ asset('css/themes/theme-5.css') }}'
-            ];
-    
-            // Generate a random index to select a theme from the array
-            const randomIndex = Math.floor(Math.random() * themes.length);
-    
-            // Load the randomly selected theme
-            document.write('<link rel="stylesheet" href="' + themes[randomIndex] + '">');
-        } else {
-            document.write('<link rel="stylesheet" href="{{ asset('css/themes/theme-basic.css') }}">');
-        }
+        document.addEventListener("DOMContentLoaded", function() {
+            // Create a link element
+            var link = document.createElement('link');
+            link.rel = 'stylesheet';
+
+            // Check if the toggle switch was checked
+            const themeChecked = sessionStorage.getItem('themeChecked');
+        
+            if (themeChecked === 'true') {
+                // Set the href attribute to the theme.css path
+                link.href = "{{ asset('css/themes/theme.css') }}";
+
+                // Define an array of background image paths
+                const backgrounds = [
+                    'theme-1.jpg',
+                    'theme-2.jpg',
+                    'theme-3.jpg',
+                    'theme-4.jpg',
+                    'theme-5.jpg',
+                    'theme-6.jpg',
+                    'theme-7.jpg',
+                    'theme-8.jpg',
+                    'theme-9.jpg',
+                    'theme-10.jpg',
+                    'theme-11.jpg',
+                    'theme-12.jpg',
+                    'theme-13.jpg',
+                    'theme-14.jpg',
+                    'theme-15.jpg',
+                    'theme-16.jpg',
+                ];
+        
+                // Generate a random index to select a background image from the array
+                const randomIndex = Math.floor(Math.random() * backgrounds.length);
+        
+                // Set the randomly selected background image class
+                document.body.classList.add('theme-' + (randomIndex + 1));
+            } else {
+                // Set the href attribute to the theme-basic.css path
+                link.href = "{{ asset('css/themes/theme-basic.css') }}";
+            }
+
+            // Append the link element to the head of the document
+            document.head.appendChild(link);
+        });
     </script>
-    
-    
 </head>
 <body>
     <div id="filter">

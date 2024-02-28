@@ -1,0 +1,131 @@
+body {
+    margin: 0;
+    padding: 0;
+    background-size: cover;
+    background-position: center;
+    font-family: "Arial", sans-serif;
+    color: #000;
+    text-align: center;
+    font-size: 36px;
+    line-height: 1.6;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    overflow: hidden;
+}
+
+/* Add more styles as needed */
+
+.theme-1 {
+    background-image: url("../../images/background/theme-1.jpg");
+}
+
+.theme-2 {
+    background-image: url("../../images/background/theme-2.jpg");
+}
+
+.theme-3 {
+    background-image: url("../../images/background/theme-3.jpg");
+}
+
+.theme-4 {
+    background-image: url("../../images/background/theme-4.jpg");
+}
+
+.theme-5 {
+    background-image: url("../../images/background/theme-5.jpg");
+}
+
+.theme-6 {
+    background-image: url("../../images/background/theme-6.jpg");
+}
+
+.theme-7 {
+    background-image: url("../../images/background/theme-7.jpg");
+}
+
+.theme-8 {
+    background-image: url("../../images/background/theme-8.jpg");
+}
+
+.theme-9 {
+    background-image: url("../../images/background/theme-9.jpg");
+}
+
+.theme-10 {
+    background-image: url("../../images/background/theme-10.jpg");
+}
+
+.theme-11 {
+    background-image: url("../../images/background/theme-11.jpg");
+}
+
+.theme-12 {
+    background-image: url("../../images/background/theme-12.jpg");
+}
+
+.theme-13 {
+    background-image: url("../../images/background/theme-13.jpg");
+}
+
+.theme-14 {
+    background-image: url("../../images/background/theme-14.jpg");
+}
+
+.theme-15 {
+    background-image: url("../../images/background/theme-15.jpg");
+}
+
+.theme-16 {
+    background-image: url("../../images/background/theme-16.jpg");
+}
+
+#visibletext {
+    font-weight: bold;
+    font-size: 40px;
+    text-transform: uppercase;
+    text-shadow: 2px 2px 4px #ffffff00;
+    margin: 50px;
+    line-height: 2.8;
+}
+
+@media (max-width: 768px) {
+    body {
+        font-size: 24px; /* Smaller font size for mobile */
+        line-height: 1.4; /* Smaller line spacing for mobile */
+    }
+
+    #visibletext {
+        font-size: 28px; /* Smaller font size for mobile */
+        margin: 20px; /* Reduced margin for mobile */
+        line-height: 1.8; /* Smaller line spacing for mobile */
+    }
+}
+
+#text {
+    display: none;
+}
+
+/* Light filter style */
+#filter {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.3); /* Light filter color */
+    color: red;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#pageInfo {
+    position: fixed;
+    bottom: 10px;
+    right: 10px;
+    font-size: 14px;
+    color: #000;
+    opacity: 0.7;
+}
