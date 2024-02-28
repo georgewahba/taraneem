@@ -10,6 +10,7 @@ body {
     text-align: center;
     height: 100vh; /* Make the body take the full viewport height */
     justify-content: flex-start; /* Align content to the top */
+    overflow-x: hidden;
 }
 
 h1 {
