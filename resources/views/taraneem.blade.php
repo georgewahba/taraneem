@@ -23,14 +23,14 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach($taraneem as $taraneem)
+                            @foreach($taraneem as $index => $taraneema)
                             <tr>
-                                <td class="py-2 px-3 border">{{ $taraneem->id }}</td>
-                                <td class="py-2 px-3 border">{{ $taraneem->titel }}</td>
-                                <td class="py-2 px-3 border">{{ substr($taraneem->lyrics, 0, 50) }}{{ strlen($taraneem->lyrics) > 50 ? '...' : '' }}</td>
+                                <td class="py-2 px-3 border">{{ $index + 1 }}</td>
+                                <td class="py-2 px-3 border">{{ $taraneema->titel }}</td>
+                                <td class="py-2 px-3 border">{{ substr($taraneema->lyrics, 0, 50) }}{{ strlen($taraneema->lyrics) > 50 ? '...' : '' }}</td>
                                 <td class="py-2 px-3 border">
-                                    <a href="edittaraneem/{{ $taraneem->id }}" style="color: blue;">Edit</a>
-                                    <a href="javascript:void(0);" style="color: red;" onclick="confirmDelete({{ $taraneem->id }});">Delete</a>
+                                    <a href="edittaraneem/{{ $taraneema->id }}" style="color: blue;">Edit</a>
+                                    <a href="javascript:void(0);" style="color: red;" onclick="confirmDelete({{ $taraneema->id }});">Delete</a>
                                 </td>
                             </tr>
                             @endforeach

@@ -19,9 +19,10 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach($suggestions as $taraneem)
+                            
+                            @foreach($suggestions as $index => $taraneem)
                             <tr>
-                                <td class="py-2 px-3 border">{{ $taraneem->id }}</td>
+                                <td class="py-2 px-3 border">{{ $index + 1 }}</td>
                                 <td class="py-2 px-3 border">{{ $taraneem->titel }}</td>
                                 <td class="py-2 px-3 border">{{ substr($taraneem->lyrics, 0, 50) }}{{ strlen($taraneem->lyrics) > 50 ? '...' : '' }}</td>
                                 <td class="py-2 px-3 border">

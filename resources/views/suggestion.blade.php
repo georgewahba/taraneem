@@ -3,7 +3,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>{{ config('app.name', 'Laravel') }}</title>
+    <title>Suggestions</title>
     <link rel="icon" type="image/png" href="{{ asset('images/mini-logo.png') }}">
     <meta name="apple-mobile-web-app-capable" content="yes" />
 
@@ -28,6 +28,7 @@
                     <h2 class="text-lg font-medium text-gray-900 dark:text-gray-100">
                         {{ __('Doe hier een suggestie') }}
                     </h2>
+                    <h3>!! Stuur de volledige tekst uitgetypt, geen linkjes AUB !!</h3>
                     <form action="/storesuggestion" method="POST">
                         @csrf
                         <x-input-label for="titel" value="Titel:"/>
