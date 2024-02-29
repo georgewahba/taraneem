@@ -38,11 +38,13 @@
                         <textarea id="lyrics" name="lyrics" class="mt-1 block w-full h-40 resize-y p-2" style="background-color: #121826; color: #FFFFFF; border: 1px solid #394150; border-radius: 5px;"
                         onfocus="this.style.borderColor = '#4d4adc'; this.style.borderWidth = '2px';"
                         onblur="this.style.borderColor = '#394150'; this.style.borderWidth = '1px';"  rows="12"></textarea>
-
-                        <div class="flex justify-end mt-4">
+                        <div class="flex justify-between mt-4"> <!-- Changed justify-end to justify-between -->
+                            <x-primary-button class="ms-3">
+                                <a href="/">terug naar home</a> <!-- Corrected the typo in "naar" -->
+                            </x-primary-button>
                             <x-primary-button class="ms-3">
                                 Versturen
-                            </x-primary-button>
+                            </x-primary-button>                            
                         </div>
                     </form>
                 </div>
