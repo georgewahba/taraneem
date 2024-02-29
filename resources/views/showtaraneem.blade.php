@@ -37,6 +37,8 @@
                     'theme-14.jpg',
                     'theme-15.jpg',
                     'theme-16.jpg',
+                    'theme-17.jpg',
+                    'theme-18.jpg',
                 ];
         
                 // Generate a random index to select a background image from the array

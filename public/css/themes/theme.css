@@ -81,6 +81,14 @@ body {
     background-image: url("../../images/background/theme-16.jpg");
 }
 
+.theme-17 {
+    background-image: url("../../images/background/theme-17.jpg");
+}
+
+.theme-18 {
+    background-image: url("../../images/background/theme-18.jpg");
+}
+
 #visibletext {
     font-weight: bold;
     font-size: 40px;
