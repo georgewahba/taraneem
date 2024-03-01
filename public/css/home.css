@@ -38,6 +38,7 @@ p {
     text-align: left; /* Align the text to the left */
     margin-top: 20px;
     font-size: 18px;
+    text-align: center;
 }
 
 a.filtered {
