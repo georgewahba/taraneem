@@ -3,6 +3,7 @@ var elem = document.documentElement;
 var textarray = text.split("#");
 var i = 0;
 document.getElementById("visibletext").innerHTML = textarray[i];
+const themeChecked = sessionStorage.getItem('themeChecked');
 
 // Function to request fullscreen
 function openFullscreen() {
@@ -83,12 +84,41 @@ document.addEventListener('keydown', function (event) {
         updatePageInfo();
     }
 
+    if (i == textarray.length - 2) { // Check if it's the penultimate page
+        addImageToDiv(); // Function call to add an image
+    } else {
+        removeImageFromDiv(); // Function call to remove the image
+    }
+
     if (event.keyCode === 27) { // 27 is the key code for the 'Esc' key
         exitFullscreen();
         location.replace("/")
 
     }
 });
+
+function addImageToDiv() {
+    var imageDiv = document.getElementById("imageDiv");
+    var existingImages = imageDiv.getElementsByTagName("img").length;
+    var imagesToAdd = 3 - existingImages; // Calculate how many images need to be added to make it up to 3
+
+    var img = document.createElement("img");
+    for (var j = 0; j < imagesToAdd; j++) {
+        var clonedImg = img.cloneNode(true);
+        if (themeChecked === "true") {
+            clonedImg.src = "../images/cross-black.png";
+        } else {
+            clonedImg.src = "../images/cross-white.png";
+        }
+        imageDiv.appendChild(clonedImg);
+    }
+}
+
+function removeImageFromDiv() {
+    var imageDiv = document.getElementById("imageDiv");
+    imageDiv.innerHTML = "";
+}
+
 
 document.addEventListener('touchstart', handleTouchStart, false);
 document.addEventListener('touchmove', handleTouchMove, false);
@@ -183,3 +213,4 @@ document.addEventListener('touchstart', function () {
 
 // Initial setup to hide the cursor after 3 seconds of inactivity
 resetCursorTimeout();
+

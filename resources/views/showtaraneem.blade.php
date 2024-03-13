@@ -60,16 +60,18 @@
     <div id="filter">
         <p>Click anywhere on the screen to go fullscreen</p>
     </div>
-
+    
     <p id="text">
         {{$taraneem->lyrics}}
     </p>
     <div>
         <p id="visibletext"></p>
     </div>
+    
+    <div id="pageInfo"></div>
+    
+    <div id="imageDiv"></div>
 
-    <div id="pageInfo">
-    </div>
 <script src="{{ asset('js/show.js') }}"></script>
 </body>
 </html>

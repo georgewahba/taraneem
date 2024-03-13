@@ -8,6 +8,7 @@ body {
     font-size: 36px; /* Increase font size */
     line-height: 1.6; /* Increase line spacing */
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
     height: 100vh;
@@ -61,4 +62,16 @@ body {
     font-size: 14px;
     color: #fff;
     opacity: 0.7;
+}
+
+#imageDiv {
+    display: flex;
+    justify-content: center;
+    gap: 10px; 
+    margin-top: 20px; 
+}
+
+#imageDiv img {
+    width: 50px;
+    height: auto;
 }
