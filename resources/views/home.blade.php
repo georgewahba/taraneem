@@ -39,7 +39,7 @@
     <div id="theme-toggle" style="position: fixed; top: 10px; right: 10px;">
         <label for="theme-checkbox">Theme</label>
         <label class="switch">
-            <input type="checkbox" id="theme-checkbox">
+            <input type="checkbox" id="theme-checkbox" checked>
             <span class="slider round"></span>
         </label>
     </div>
