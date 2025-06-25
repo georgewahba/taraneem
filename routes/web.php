@@ -2,8 +2,9 @@
 
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\SuggestionsController;
+use App\Http\Controllers\SuggestionsController; 
 use App\Http\Controllers\TaraneemController;
+use App\Http\Controllers\TrackController;
 use App\Models\Taraneem;
 use Illuminate\Support\Facades\Route;
 use Symfony\Component\Console\Completion\Suggestion;
@@ -47,10 +48,21 @@ Route::get('/suggestedtaraneem', [SuggestionsController::class, 'suggestedtarane
 Route::get('/showsuggested/{suggestion}', [SuggestionsController::class, 'showsuggested'])->name('showsuggested')->middleware(['auth', 'verified']);
 Route::get('/deletesuggested/{suggestion}', [SuggestionsController::class, 'destroy'])->name('suggestion.destroy')->middleware(['auth', 'verified']);
 
+Route::get('/player', [TrackController::class, 'player'])->name('tracks.player')->middleware(['auth', 'verified']);
+
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+
+    Route::get('/tracks', [TrackController::class, 'index'])->name('tracks.index');
+    Route::get('/tracks/create', [TrackController::class, 'create'])->name('tracks.create');
+    Route::post('/tracks', [TrackController::class, 'store'])->name('tracks.store');
+    Route::delete('/tracks/{track}', [TrackController::class, 'destroy'])->name('tracks.destroy');
+    Route::get('/tracks/{track}/edit', [TrackController::class, 'edit'])->name('tracks.edit');
+    Route::post('/tracks/{track}', [TrackController::class, 'update'])->name('tracks.update');
+
+
 });
 
 

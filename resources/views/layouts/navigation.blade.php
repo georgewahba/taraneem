@@ -21,6 +21,9 @@
                     <x-nav-link :href="route('suggestedtaraneem')" :active="request()->routeIs('suggestedtaraneem')">
                         {{ __('Suggestions') }}
                     </x-nav-link>
+                    <x-nav-link :href="route('tracks.index')" :active="request()->routeIs('tracks.index')">
+                        {{ __('Tracks') }}
+                    </x-nav-link>
                 </div>
             </div>
 
@@ -81,6 +84,9 @@
             </x-responsive-nav-link>
             <x-responsive-nav-link :href="route('suggestedtaraneem')" :active="request()->routeIs('suggestedtaraneem')">
                 {{ __('Suggestions') }}
+            </x-responsive-nav-link>
+            <x-responsive-nav-link :href="route('tracks.index')" :active="request()->routeIs('tracks.index')">
+                {{ __('Tracks') }}
             </x-responsive-nav-link>
         </div>
 

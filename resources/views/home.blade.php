@@ -32,6 +32,9 @@
         <ul>
             <li><a href="/">Home</a></li>
             <li><a href="/browseall">Bekijk Alle Taraneem</a></li>
+            <li>
+    <a href="{{ route('tracks.player') }}">Muziekspeler</a>
+</li>
         </ul>
     </div>
 
