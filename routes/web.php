@@ -48,7 +48,7 @@ Route::get('/suggestedtaraneem', [SuggestionsController::class, 'suggestedtarane
 Route::get('/showsuggested/{suggestion}', [SuggestionsController::class, 'showsuggested'])->name('showsuggested')->middleware(['auth', 'verified']);
 Route::get('/deletesuggested/{suggestion}', [SuggestionsController::class, 'destroy'])->name('suggestion.destroy')->middleware(['auth', 'verified']);
 
-Route::get('/player', [TrackController::class, 'player'])->name('tracks.player')->middleware(['auth', 'verified']);
+Route::get('/player', [TrackController::class, 'player'])->name('tracks.player');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
