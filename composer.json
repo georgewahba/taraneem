@@ -11,6 +11,9 @@
         "laravel/framework": "^10.10",
         "laravel/sanctum": "^3.3",
         "laravel/tinker": "^2.8",
+        "nyholm/psr7": "^1.8",
+        "railsware/mailtrap-php": "^3.9",
+        "symfony/http-client": "^7.3",
         "twilio/sdk": "^7.16",
         "yoeunes/toastr": "^2.3"
     },

@@ -30,9 +30,11 @@ class BladeCompiler extends Compiler implements CompilerInterface
         Concerns\CompilesLayouts,
         Concerns\CompilesLoops,
         Concerns\CompilesRawPhp,
+        Concerns\CompilesSessions,
         Concerns\CompilesStacks,
         Concerns\CompilesStyles,
         Concerns\CompilesTranslations,
+        Concerns\CompilesUseStatements,
         ReflectsClosures;
 
     /**
@@ -332,7 +334,7 @@ class BladeCompiler extends Compiler implements CompilerInterface
 
         return tap($view->render(), function () use ($view, $deleteCachedView) {
             if ($deleteCachedView) {
-                unlink($view->getPath());
+                @unlink($view->getPath());
             }
         });
     }
@@ -806,7 +808,7 @@ class BladeCompiler extends Compiler implements CompilerInterface
      * @param  string|null  $prefix
      * @return void
      */
-    public function anonymousComponentPath(string $path, string $prefix = null)
+    public function anonymousComponentPath(string $path, ?string $prefix = null)
     {
         $prefixHash = md5($prefix ?: $path);
 
@@ -828,7 +830,7 @@ class BladeCompiler extends Compiler implements CompilerInterface
      * @param  string|null  $prefix
      * @return void
      */
-    public function anonymousComponentNamespace(string $directory, string $prefix = null)
+    public function anonymousComponentNamespace(string $directory, ?string $prefix = null)
     {
         $prefix ??= $directory;
 

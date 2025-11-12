@@ -3,7 +3,7 @@
 /*
  * This file is part of Psy Shell.
  *
- * (c) 2012-2023 Justin Hileman
+ * (c) 2012-2025 Justin Hileman
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -12,13 +12,13 @@
 namespace Psy;
 
 use Psy\Exception\BreakException;
+use Psy\Exception\InterruptException;
 use Psy\Exception\ThrowUpException;
 
 /**
  * The Psy Shell's execution loop scope.
  *
- * @todo Once we're on PHP 5.5, we can switch ExecutionClosure to a generator
- * and get rid of the duplicate closure implementations :)
+ * @todo Switch ExecutionClosure to a generator and get rid of the duplicate closure implementations?
  */
 class ExecutionLoopClosure extends ExecutionClosure
 {
@@ -71,18 +71,24 @@ class ExecutionLoopClosure extends ExecutionClosure
 
                     $__psysh__->writeReturnValue($_);
                 } catch (BreakException $_e) {
+                    // exit() or ctrl-d exits the REPL
                     $__psysh__->writeException($_e);
 
-                    return;
+                    return $_e->getCode();
                 } catch (ThrowUpException $_e) {
+                    // `throw-up` command throws the exception out of the REPL
                     $__psysh__->writeException($_e);
 
                     throw $_e;
-                } catch (\Throwable $_e) {
+                } catch (InterruptException $_e) {
+                    // ctrl-c stops execution, but continues the REPL
                     $__psysh__->writeException($_e);
+                } catch (\Throwable $_e) {
+                    // Everything else gets printed to the shell output
+                    $__psysh__->writeException($_e);
+                } finally {
+                    $__psysh__->afterLoop();
                 }
-
-                $__psysh__->afterLoop();
             }
         });
     }

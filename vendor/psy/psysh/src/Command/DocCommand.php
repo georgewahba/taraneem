@@ -3,7 +3,7 @@
 /*
  * This file is part of Psy Shell.
  *
- * (c) 2012-2023 Justin Hileman
+ * (c) 2012-2025 Justin Hileman
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -12,11 +12,11 @@
 namespace Psy\Command;
 
 use Psy\Formatter\DocblockFormatter;
+use Psy\Formatter\ManualFormatter;
 use Psy\Formatter\SignatureFormatter;
 use Psy\Input\CodeArgument;
 use Psy\Output\ShellOutput;
-use Psy\Reflection\ReflectionClassConstant;
-use Psy\Reflection\ReflectionConstant_;
+use Psy\Reflection\ReflectionConstant;
 use Psy\Reflection\ReflectionLanguageConstruct;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -63,18 +63,18 @@ HELP
      *
      * @return int 0 if everything went fine, or an exit code
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $value = $input->getArgument('target');
         if (ReflectionLanguageConstruct::isLanguageConstruct($value)) {
             $reflector = new ReflectionLanguageConstruct($value);
             $doc = $this->getManualDocById($value);
         } else {
-            list($target, $reflector) = $this->getTargetAndReflector($value);
+            list($target, $reflector) = $this->getTargetAndReflector($value, $output);
             $doc = $this->getManualDoc($reflector) ?: DocblockFormatter::format($reflector);
         }
 
-        $db = $this->getApplication()->getManualDb();
+        $hasManual = $this->getShell()->getManual() !== null;
 
         if ($output instanceof ShellOutput) {
             $output->startPaging();
@@ -88,7 +88,7 @@ HELP
         $output->writeln(SignatureFormatter::format($reflector));
         $output->writeln('');
 
-        if (empty($doc) && !$db) {
+        if (empty($doc) && !$hasManual) {
             $output->writeln('<warning>PHP manual not found</warning>');
             $output->writeln('    To document core PHP functionality, download the PHP reference manual:');
             $output->writeln('    https://github.com/bobthecow/psysh/wiki/PHP-manual');
@@ -146,14 +146,13 @@ HELP
                 break;
 
             case \ReflectionClassConstant::class:
-            case ReflectionClassConstant::class:
                 // @todo this is going to collide with ReflectionMethod ids
                 // someday... start running the query by id + type if the DB
                 // supports it.
                 $id = $reflector->class.'::'.$reflector->name;
                 break;
 
-            case ReflectionConstant_::class:
+            case ReflectionConstant::class:
                 $id = $reflector->name;
                 break;
 
@@ -244,11 +243,54 @@ HELP
 
     private function getManualDocById($id)
     {
-        if ($db = $this->getApplication()->getManualDb()) {
-            $result = $db->query(\sprintf('SELECT doc FROM php_manual WHERE id = %s', $db->quote($id)));
-            if ($result !== false) {
-                return $result->fetchColumn(0);
+        if ($manual = $this->getShell()->getManual()) {
+            switch ($manual->getVersion()) {
+                case 2:
+                    // v2 manual docs are pre-formatted and should be rendered as-is
+                    return $manual->get($id);
+
+                case 3:
+                    if ($doc = $manual->get($id)) {
+                        $width = $this->getTerminalWidth();
+                        $formatter = new ManualFormatter($width, $manual);
+
+                        return $formatter->format($doc);
+                    }
+                    break;
             }
         }
+
+        return null;
+    }
+
+    /**
+     * Get the current terminal width for text wrapping.
+     *
+     * @return int Terminal width in columns
+     */
+    private function getTerminalWidth(): int
+    {
+        // Query terminal size directly
+        if (\function_exists('shell_exec')) {
+            // Output format: "rows cols"
+            $output = @\shell_exec('stty size </dev/tty 2>/dev/null');
+            if ($output && \preg_match('/^\d+ (\d+)$/', \trim($output), $matches)) {
+                return (int) $matches[1];
+            }
+
+            $width = @\shell_exec('tput cols </dev/tty 2>/dev/null');
+            if ($width && \is_numeric(\trim($width))) {
+                return (int) \trim($width);
+            }
+        }
+
+        // Check COLUMNS environment variable (may be stale after resize)
+        $width = \getenv('COLUMNS');
+        if ($width && \is_numeric(\trim($width))) {
+            return (int) \trim($width);
+        }
+
+        // Fallback to 100 if we can't detect
+        return 100;
     }
 }

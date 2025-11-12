@@ -3,7 +3,7 @@
 /*
  * This file is part of Psy Shell.
  *
- * (c) 2012-2023 Justin Hileman
+ * (c) 2012-2025 Justin Hileman
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -21,8 +21,8 @@ use PhpParser\Node\Stmt\Namespace_;
  */
 abstract class NamespaceAwarePass extends CodeCleanerPass
 {
-    protected $namespace;
-    protected $currentScope;
+    protected array $namespace = [];
+    protected array $currentScope = [];
 
     /**
      * @todo should this be final? Extending classes should be sure to either
@@ -36,6 +36,8 @@ abstract class NamespaceAwarePass extends CodeCleanerPass
     {
         $this->namespace = [];
         $this->currentScope = [];
+
+        return null;
     }
 
     /**
@@ -49,8 +51,10 @@ abstract class NamespaceAwarePass extends CodeCleanerPass
     public function enterNode(Node $node)
     {
         if ($node instanceof Namespace_) {
-            $this->namespace = isset($node->name) ? $node->name->parts : [];
+            $this->namespace = isset($node->name) ? $this->getParts($node->name) : [];
         }
+
+        return null;
     }
 
     /**
@@ -61,13 +65,25 @@ abstract class NamespaceAwarePass extends CodeCleanerPass
     protected function getFullyQualifiedName($name): string
     {
         if ($name instanceof FullyQualifiedName) {
-            return \implode('\\', $name->parts);
-        } elseif ($name instanceof Name) {
-            $name = $name->parts;
+            return \implode('\\', $this->getParts($name));
+        }
+
+        if ($name instanceof Name) {
+            $name = $this->getParts($name);
         } elseif (!\is_array($name)) {
             $name = [$name];
         }
 
         return \implode('\\', \array_merge($this->namespace, $name));
+    }
+
+    /**
+     * Backwards compatibility shim for PHP-Parser 4.x.
+     *
+     * At some point we might want to make $namespace a plain string, to match how Name works?
+     */
+    protected function getParts(Name $name): array
+    {
+        return \method_exists($name, 'getParts') ? $name->getParts() : $name->parts;
     }
 }

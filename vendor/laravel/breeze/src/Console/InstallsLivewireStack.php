@@ -20,13 +20,13 @@ trait InstallsLivewireStack
             return [
                 '@tailwindcss/forms' => '^0.5.2',
                 'autoprefixer' => '^10.4.2',
-                'postcss' => '^8.4.6',
+                'postcss' => '^8.4.31',
                 'tailwindcss' => '^3.1.0',
             ] + $packages;
         });
 
         // Install Livewire...
-        if (! $this->requireComposerPackages(['livewire/livewire:^3.0', 'livewire/volt:^1.0'])) {
+        if (! $this->requireComposerPackages(['livewire/livewire:^3.4', 'livewire/volt:^1.0'])) {
             return 1;
         }
 

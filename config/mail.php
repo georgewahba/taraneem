@@ -65,6 +65,11 @@ return [
             // ],
         ],
 
+        'mailtrap' => [
+            'transport' => 'mailtrap',
+            'api_key' => env('MAILTRAP_API_KEY'),
+        ],
+
         'sendmail' => [
             'transport' => 'sendmail',
             'path' => env('MAIL_SENDMAIL_PATH', '/usr/sbin/sendmail -bs -i'),

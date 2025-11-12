@@ -3,11 +3,11 @@
 namespace App\Http\Controllers;
 
 use Exception;
-use App\Mail\SendMail;
-use Twilio\Rest\Client;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Mail;
+use Mailtrap\MailtrapClient;
+use Mailtrap\Mime\MailtrapEmail;
+use Symfony\Component\Mime\Address;
 
 class SuggestionsController extends Controller
 {
@@ -15,34 +15,39 @@ class SuggestionsController extends Controller
     {
         return view('suggestion');
     }
-    
+
     public function store(Request $request)
     {
         $request->validate([
-            'titel' => 'required',
+            'titel'  => 'required',
             'lyrics' => 'required',
         ]);
-        
+
+        // Opslaan in DB
         $suggestion = new \App\Models\Sugestion();
-        $suggestion->titel = $request->titel;
+        $suggestion->titel  = $request->titel;
         $suggestion->lyrics = $request->lyrics;
         $suggestion->save();
-        
+
         toastr()->success('Jouw suggestie is opgeslagen. Bedankt voor je bijdrage!');
 
-        $receiverNumber = '+31640933995'; 
-        $message = 'Er is een nieuwe suggestie toegevoegd. Ga naar https://www.taraneem.nl/suggestedtaraneem de website om het te bekijken.'; 
+        // === Mailtrap API key send ===
+        $apiKey = env('MAILTRAP_API_KEY');
 
-        $sid = env('TWILIO_SID');
-        $token = env('TWILIO_TOKEN');
-        $fromNumber = env('TWILIO_FROM');
+        $body = 'Er is een nieuwe suggestie toegevoegd. Ga naar https://www.taraneem.nl/suggestedtaraneem de website om het te bekijken.';
 
         try {
-            $client = new Client($sid, $token);
-            $client->messages->create($receiverNumber, [
-                'from' => $fromNumber,
-                'body' => $message
-            ]);
+            // Initialize Mailtrap client
+            $client = MailtrapClient::initSendingEmails(apiKey: $apiKey);
+
+            // Create and send email
+            $email = (new MailtrapEmail())
+                ->from(new Address(config('mail.from.address'), config('mail.from.name')))
+                ->to(new Address('info@wahba.nl'))
+                ->subject('Nieuwe suggestie toegevoegd')
+                ->text($body);
+
+            $client->send($email);
 
             return redirect("/");
         } catch (Exception $e) {
@@ -67,4 +72,3 @@ class SuggestionsController extends Controller
         return redirect("/suggestedtaraneem")->with('success', 'Suggestion deleted successfully.');
     }
 }
-
