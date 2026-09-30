@@ -30,6 +30,13 @@
 
             <!-- Page Content -->
             <main>
+                @if (session('success'))
+                    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-6">
+                        <div role="status" class="border border-green-200 bg-green-100 text-green-800 px-4 py-3 rounded-md dark:border-green-800 dark:bg-green-900 dark:text-green-100">
+                            {{ session('success') }}
+                        </div>
+                    </div>
+                @endif
                 {{ $slot }}
             </main>
         </div>

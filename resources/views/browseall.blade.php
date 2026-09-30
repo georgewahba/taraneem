@@ -1,52 +1,58 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Browse All Taraneem</title>
+@extends('layouts.public')
 
-    <link rel="icon" type="image/png" href="{{ asset('images/mini-logo.png') }}" sizes="32x32">
-    <meta name="apple-mobile-web-app-capable" content="yes" />
+@section('title', 'All hymns | Taraneem')
+@section('meta-description', 'Explore every hymn in the Taraneem collection.')
 
-    <!-- Apple Touch Icon for Safari on iOS devices -->
-    <link rel="apple-touch-icon" sizes="180x180" href="{{ asset('images/mini-logo.png') }}">
-    <link rel="mask-icon" href="{{ asset('images/mini-logo.png') }}">
-    
-    <!-- Favicon for Safari on non-iOS devices -->
-    <link rel="icon" type="image/png" href="{{ asset('images/mini-logo.png') }}" sizes="32x32">
-    <link rel="icon" type="image/png" href="{{ asset('images/mini-logo.png') }}" sizes="192x192">
-    <link rel="icon" type="image/png" href="{{ asset('images/mini-logo.png') }}" sizes="512x512">
-    
-    <link rel="stylesheet" href="{{ asset("css/browse.css") }}">
+@section('content')
+    @php($library = $taraneem->values())
 
-</head>
-<body>
-    <div class="menu-icon" id="menu-icon" onclick="toggleMenu()">&#9776;</div>
-    <div class="menu" id="menu">
-        <ul>
-            <li><a href="/">Home</a></li>
-            <li><a href="/browseall">Bekijk Alle Taraneem</a></li>
-            <li><a href="{{ route('tracks.player') }}">Muziekspeler</a></li>
+    <section class="library-intro" aria-labelledby="library-title">
+        <div class="site-shell">
+            <p class="eyebrow">The collection</p>
+            <h1 id="library-title">A hymn for every moment.</h1>
+            <p>Familiar favourites and words waiting to become part of your worship.</p>
 
-        </ul>
-    </div>
+            <div class="library-tools">
+                <form class="library-search" id="browse-search" role="search" novalidate>
+                    <label class="sr-only" for="browse-filter">Search hymns</label>
+                    <i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i>
+                    <input id="browse-filter" type="search" autocomplete="off" placeholder="Search by title">
+                </form>
 
-    <h1>Browse All Taraneem</h1>
-    <div id="letter-row">
-        <a href="#" onclick="showAll()">All</a>
-        <a href="#" onclick="filterByLetter('#')"> # </a>
-        @foreach (range('A', 'Z') as $letter)
-            <a href="#" onclick="filterByLetter('{{$letter}}')">{{$letter}}</a>
-        @endforeach
-    </div>
-    <p id="taraneemList">
-        <!-- Display the taraneem list sorted by title in alphabetical order -->
-        @foreach ($taraneem->sortBy('titel') as $tarnima)
-            <a class="filtered" href="tarnima/{{$tarnima->id}}">{{$tarnima->titel}}</a><br>
-        @endforeach
-    </p>
+                <div class="letter-filters" aria-label="Filter by first letter">
+                    <button class="letter-filter is-active" type="button" data-letter="all" aria-pressed="true">All</button>
+                    <button class="letter-filter" type="button" data-letter="other" aria-pressed="false">0-9</button>
+                    @foreach (range('A', 'Z') as $letter)
+                        <button class="letter-filter" type="button" data-letter="{{ $letter }}" aria-pressed="false">{{ $letter }}</button>
+                    @endforeach
+                </div>
+            </div>
+        </div>
+    </section>
 
+    <section class="library-section" aria-labelledby="library-title">
+        <div class="site-shell">
+            <div class="library-summary">
+                <span id="library-count" aria-live="polite">{{ $library->count() }} hymns</span>
+                <span>Alphabetical order</span>
+            </div>
+
+            <div class="library-grid" id="taraneemList">
+                @forelse ($library as $index => $tarnima)
+                    <a class="library-item" data-library-item href="{{ route('taraneem.show', $tarnima) }}">
+                        <span class="library-item-number">{{ str_pad((string) ($index + 1), 2, '0', STR_PAD_LEFT) }}</span>
+                        <span class="library-item-title" dir="auto">{{ $tarnima->titel }}</span>
+                        <i class="fa-solid fa-arrow-right" aria-hidden="true"></i>
+                    </a>
+                @empty
+                    <p class="library-empty">No hymns have been added yet.</p>
+                @endforelse
+                <p class="library-empty" id="library-no-results" hidden>No hymns found.</p>
+            </div>
+        </div>
+    </section>
+@endsection
+
+@push('scripts')
     <script src="{{ asset('js/browse.js') }}"></script>
-
-</body>
-</html>
+@endpush

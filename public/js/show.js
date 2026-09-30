@@ -1,216 +1,217 @@
-var text = document.getElementById("text").innerHTML;
-var elem = document.documentElement;
-var textarray = text.split("#");
-var i = 0;
-document.getElementById("visibletext").innerHTML = textarray[i];
-const themeChecked = sessionStorage.getItem('themeChecked');
+document.addEventListener('DOMContentLoaded', function () {
+    var dataElement = document.getElementById('lyric-data');
+    var lyricTarget = document.getElementById('visibletext');
+    var stage = document.querySelector('.presenter-stage');
+    var content = document.querySelector('.presenter-content');
+    var countTarget = document.getElementById('pageInfo');
+    var previousButton = document.getElementById('previous-slide');
+    var nextButton = document.getElementById('next-slide');
+    var fullscreenButton = document.getElementById('fullscreen-toggle');
+    var endingMark = document.getElementById('imageDiv');
+    var status = document.getElementById('presenter-status');
+    var currentSlide = 0;
+    var hideControlsTimer;
+    var resizeFrame;
+    var lyrics = '';
 
-// Function to request fullscreen
-function openFullscreen() {
-    // Check if the document is already in fullscreen
-    if (
-        !document.fullscreenElement &&
-        !document.webkitFullscreenElement &&
-        !document.msFullscreenElement
-    ) {
-        if (elem.requestFullscreen) {
-            elem.requestFullscreen();
-        } else if (elem.webkitRequestFullscreen) { /* Safari */
-            elem.webkitRequestFullscreen();
-        } else if (elem.msRequestFullscreen) { /* IE11 */
-            elem.msRequestFullscreen();
-        }
-    }
-
-    // Remove the filter after going into fullscreen
-    var filter = document.getElementById("filter");
-    filter.style.display = "none";
-}
-
-// Function to exit fullscreen
-function exitFullscreen() {
-    if (document.exitFullscreen) {
-        document.exitFullscreen();
-    } else if (document.webkitExitFullscreen) { /* Safari */
-        document.webkitExitFullscreen();
-    } else if (document.msExitFullscreen) { /* IE11 */
-        document.msExitFullscreen();
-    }
-
-    // Show the filter
-    var filter = document.getElementById("filter");
-    filter.style.display = "flex";
-}
-
-// Listen for a click event on the document and request fullscreen when clicked
-document.addEventListener('click', function () {
-    openFullscreen();
-});
-
-var pageInfo = document.getElementById("pageInfo");
-
-// Function to update page information
-function updatePageInfo() {
-    pageInfo.innerHTML = (i + 1) + " / " + textarray.length;
-}
-
-// Initial update
-updatePageInfo();
-
-var textdisplay = textarray[i].split("@");
-document.getElementById("visibletext").innerHTML = textdisplay.join("<br>"); // Join with <br> to display sentences on separate lines
-
-document.addEventListener('keydown', function (event) {
-    if (event.keyCode == 39 || event.keyCode == 40 || event.keyCode == 34) {
-        i++;
-        if (i >= textarray.length) {
-            i = textarray.length - 1;
-            exitFullscreen(); // Exit fullscreen when reaching the last item
-            location.replace("/")
-
-        }
-        textdisplay = textarray[i].split("@");
-        document.getElementById("visibletext").innerHTML = textdisplay.join("<br>");
-        updatePageInfo();
-    }
-
-    if (event.keyCode == 37 || event.keyCode == 38 || event.keyCode == 33) {
-        i--;
-        if (i < 0) {
-            i = 0;
-        }
-        textdisplay = textarray[i].split("@");
-        document.getElementById("visibletext").innerHTML = textdisplay.join("<br>");
-        updatePageInfo();
-    }
-
-    if (i == textarray.length - 2) { // Check if it's the penultimate page
-        addImageToDiv(); // Function call to add an image
-    } else {
-        removeImageFromDiv(); // Function call to remove the image
-    }
-
-    if (event.keyCode === 27) { // 27 is the key code for the 'Esc' key
-        exitFullscreen();
-        location.replace("/")
-
-    }
-});
-
-function addImageToDiv() {
-    var imageDiv = document.getElementById("imageDiv");
-    var existingImages = imageDiv.getElementsByTagName("img").length;
-    var imagesToAdd = 3 - existingImages; // Calculate how many images need to be added to make it up to 3
-
-    var img = document.createElement("img");
-    for (var j = 0; j < imagesToAdd; j++) {
-        var clonedImg = img.cloneNode(true);
-        if (themeChecked === "true") {
-            clonedImg.src = "../images/cross-black.png";
-        } else {
-            clonedImg.src = "../images/cross-white.png";
-        }
-        imageDiv.appendChild(clonedImg);
-    }
-}
-
-function removeImageFromDiv() {
-    var imageDiv = document.getElementById("imageDiv");
-    imageDiv.innerHTML = "";
-}
-
-
-document.addEventListener('touchstart', handleTouchStart, false);
-document.addEventListener('touchmove', handleTouchMove, false);
-
-var xDown = null;
-var yDown = null;
-
-function getTouches(evt) {
-    return evt.touches ||             // browser API
-        evt.originalEvent.touches; // jQuery
-}
-
-function handleTouchStart(evt) {
-    const firstTouch = getTouches(evt)[0];
-    xDown = firstTouch.clientX;
-    yDown = firstTouch.clientY;
-}
-
-function handleTouchMove(evt) {
-    if (!xDown || !yDown) {
+    if (!dataElement || !lyricTarget || !stage || !content) {
         return;
     }
 
-    var xUp = evt.touches[0].clientX;
-    var yUp = evt.touches[0].clientY;
+    try {
+        lyrics = JSON.parse(dataElement.textContent);
+    } catch (error) {
+        lyrics = dataElement.textContent;
+    }
 
-    var xDiff = xDown - xUp;
-    var yDiff = yDown - yUp;
+    var slides = String(lyrics || '').split('#').map(function (slide) {
+        return slide.trim();
+    }).filter(function (slide) {
+        return slide.length > 0;
+    });
 
-    if (Math.abs(xDiff) > Math.abs(yDiff)) {
-        if (xDiff > 0) {
-            i++;
-            if (i >= textarray.length) {
-                i = textarray.length - 1;
-                exitFullscreen(); // Exit fullscreen when reaching the last item
-                location.replace("/")
+    if (!slides.length) {
+        slides.push('');
+    }
+    var lastSlide = slides.length - 1;
 
-            }
-            textdisplay = textarray[i].split("@");
-            document.getElementById("visibletext").innerHTML = textdisplay.join("<br>");
-            updatePageInfo();
-        } else {
-            i--;
-            if (i < 0) {
-                i = 0;
-            }
-            textdisplay = textarray[i].split("@");
-            document.getElementById("visibletext").innerHTML = textdisplay.join("<br>");
-            updatePageInfo();
+    function setPresentationTheme() {
+        var immersive = true;
+        try {
+            immersive = sessionStorage.getItem('taraneem-presentation-theme') !== 'quiet';
+        } catch (error) {
+            immersive = true;
+        }
+        document.body.dataset.presentationTheme = immersive ? 'immersive' : 'quiet';
+        document.body.dataset.backdrop = String(Math.floor(Math.random() * 6) + 1);
+    }
+
+    function fitLyrics() {
+        if (lyricTarget.hidden) {
+            return;
+        }
+        lyricTarget.style.removeProperty('font-size');
+        var size = parseFloat(getComputedStyle(lyricTarget).fontSize);
+        var stageStyle = getComputedStyle(stage);
+        var availableHeight = stage.clientHeight - parseFloat(stageStyle.paddingTop) - parseFloat(stageStyle.paddingBottom);
+        if (!endingMark.hidden) {
+            availableHeight -= endingMark.offsetHeight + (parseFloat(getComputedStyle(content).rowGap) || 0);
+        }
+        while (size > 14 && (lyricTarget.scrollHeight > availableHeight || lyricTarget.scrollWidth > lyricTarget.clientWidth)) {
+            size -= 1;
+            lyricTarget.style.fontSize = size + 'px';
         }
     }
 
-    xDown = null;
-    yDown = null;
-};
-
-
-var cursorVisible = true;
-var cursorTimeout;
-
-// Function to hide the cursor after a certain period of inactivity
-function hideCursor() {
-    document.documentElement.style.cursor = "none";
-    cursorVisible = false;
-}
-
-// Function to show the cursor
-function showCursor() {
-    document.documentElement.style.cursor = "auto";
-    cursorVisible = true;
-}
-
-// Function to reset the cursor timeout
-function resetCursorTimeout() {
-    if (cursorTimeout) {
-        clearTimeout(cursorTimeout);
+    function renderLyrics(text) {
+        var lines = text.split('@').map(function (line) {
+            return line.trim();
+        });
+        while (lines.length && !lines[lines.length - 1]) {
+            lines.pop();
+        }
+        var fragment = document.createDocumentFragment();
+        lines.forEach(function (line, index) {
+            fragment.appendChild(document.createTextNode(line));
+            if (index < lines.length - 1) {
+                fragment.appendChild(document.createElement('br'));
+            }
+        });
+        lyricTarget.replaceChildren(fragment);
     }
-    cursorTimeout = setTimeout(hideCursor, 3000); // Hide cursor after 3 seconds of inactivity
-}
 
-document.addEventListener('mousemove', function (event) {
-    event.preventDefault(); // Prevent default behavior
-    showCursor();
-    resetCursorTimeout();
+    function showControls() {
+        clearTimeout(hideControlsTimer);
+        document.body.classList.remove('is-idle');
+        if (document.fullscreenElement) {
+            hideControlsTimer = setTimeout(function () {
+                document.body.classList.add('is-idle');
+            }, 2000);
+        }
+    }
+
+    function updateSlide() {
+        var isEnding = currentSlide === lastSlide;
+        endingMark.hidden = !isEnding;
+        renderLyrics(slides[currentSlide]);
+        lyricTarget.classList.remove('is-changing');
+        fitLyrics();
+        void lyricTarget.offsetWidth;
+        lyricTarget.classList.add('is-changing');
+        countTarget.textContent = String(currentSlide + 1) + ' / ' + String(lastSlide + 1);
+        previousButton.disabled = currentSlide === 0;
+        nextButton.disabled = isEnding;
+        showControls();
+    }
+
+    function showPrevious() {
+        if (currentSlide > 0) {
+            currentSlide -= 1;
+            updateSlide();
+        }
+    }
+
+    function showNext() {
+        if (currentSlide < lastSlide) {
+            currentSlide += 1;
+            updateSlide();
+        }
+    }
+
+    async function toggleFullscreen() {
+        try {
+            status.hidden = true;
+            if (document.fullscreenElement) {
+                await document.exitFullscreen();
+            } else if (document.documentElement.requestFullscreen) {
+                await document.documentElement.requestFullscreen();
+            } else {
+                status.textContent = 'Fullscreen is not available in this browser.';
+                status.hidden = false;
+            }
+        } catch (error) {
+            status.textContent = 'Fullscreen could not be opened. You can continue presenting here.';
+            status.hidden = false;
+        }
+    }
+
+    previousButton.addEventListener('click', showPrevious);
+    nextButton.addEventListener('click', showNext);
+    fullscreenButton.addEventListener('click', toggleFullscreen);
+
+    document.addEventListener('fullscreenchange', function () {
+        var isFullscreen = Boolean(document.fullscreenElement);
+        var label = isFullscreen ? 'Exit fullscreen' : 'Enter fullscreen';
+        fullscreenButton.setAttribute('aria-label', label);
+        fullscreenButton.setAttribute('title', label);
+        fullscreenButton.querySelector('i').className = isFullscreen ? 'fa-solid fa-compress' : 'fa-solid fa-expand';
+        showControls();
+        requestAnimationFrame(fitLyrics);
+    });
+
+    document.addEventListener('pointermove', showControls, { passive: true });
+    document.addEventListener('pointerdown', showControls, { passive: true });
+    document.addEventListener('focusin', showControls);
+
+    document.addEventListener('keydown', function (event) {
+        showControls();
+        if (event.altKey || event.ctrlKey || event.metaKey || /INPUT|TEXTAREA|SELECT/.test(event.target.tagName)) {
+            return;
+        }
+        if (['ArrowRight', 'ArrowDown', 'PageDown'].includes(event.key)) {
+            event.preventDefault();
+            showNext();
+        } else if (['ArrowLeft', 'ArrowUp', 'PageUp'].includes(event.key)) {
+            event.preventDefault();
+            showPrevious();
+        } else if (event.key === 'Home') {
+            event.preventDefault();
+            currentSlide = 0;
+            updateSlide();
+        } else if (event.key === 'End') {
+            event.preventDefault();
+            currentSlide = lastSlide;
+            updateSlide();
+        } else if (event.key.toLowerCase() === 'f') {
+            event.preventDefault();
+            toggleFullscreen();
+        }
+    });
+
+    var startTouch = null;
+    document.addEventListener('touchstart', function (event) {
+        startTouch = event.changedTouches[0];
+        showControls();
+    }, { passive: true });
+
+    document.addEventListener('touchend', function (event) {
+        if (!startTouch) {
+            return;
+        }
+        var touch = event.changedTouches[0];
+        var horizontalDistance = touch.clientX - startTouch.clientX;
+        var verticalDistance = touch.clientY - startTouch.clientY;
+        if (Math.abs(horizontalDistance) > 48 && Math.abs(horizontalDistance) > Math.abs(verticalDistance)) {
+            if (horizontalDistance < 0) {
+                showNext();
+            } else {
+                showPrevious();
+            }
+        }
+        startTouch = null;
+    }, { passive: true });
+
+    document.addEventListener('touchcancel', function () {
+        startTouch = null;
+    }, { passive: true });
+
+    window.addEventListener('resize', function () {
+        cancelAnimationFrame(resizeFrame);
+        resizeFrame = requestAnimationFrame(fitLyrics);
+    });
+    if (document.fonts) {
+        document.fonts.ready.then(fitLyrics);
+    }
+    setPresentationTheme();
+    updateSlide();
 });
-
-// Listen for touchstart event to reset the cursor timeout and show the cursor
-document.addEventListener('touchstart', function () {
-    showCursor();
-    resetCursorTimeout();
-});
-
-// Initial setup to hide the cursor after 3 seconds of inactivity
-resetCursorTimeout();
-

@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-            {{ __('Tarnima') }} : {{ $taraneem->titel }}
+            {{ __('Hymn') }}: {{ $taraneem->titel }}
         </h2>
     </x-slot>
 
@@ -10,21 +10,21 @@
             <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900 dark:text-gray-100">
                     <h2 class="text-lg font-medium text-gray-900 dark:text-gray-100">
-                        {{ __('Breng je aanpassingen toe') }}
+                        {{ __('Edit hymn') }}
                     </h2>
             
                     <p class="mt-1 text-sm text-gray-600 dark:text-gray-400">
-                        {{ __("Zet voor elke alinia een # en zet een @ achter elke regel") }}
+                        {{ __('Separate slides with # and lines with @.') }}
                     </p>
-                    <form action="/updatetaraneem/{{$taraneem->id}}" method="POST">
+                    <form action="{{ route('taraneem.update', $taraneem) }}" method="POST">
                         @csrf
-                        <x-input-label for="titel" value="Titel:"/>
-                        <x-text-input id="titel" name="titel" type="text" class="mt-1 block w-full" value="{{ $taraneem->titel }}" />
+                        <x-input-label for="titel" value="Title"/>
+                        <x-text-input id="titel" name="titel" type="text" class="mt-1 block w-full" :value="old('titel', $taraneem->titel)" maxlength="255" required />
+                        <x-input-error :messages="$errors->get('titel')" class="mt-2" />
 
-                        <x-input-label for="lyrics" value="Text:"/>
-                        <textarea id="lyrics" name="lyrics" class="mt-1 block w-full h-40 resize-y p-2" style="background-color: #121826; color: #FFFFFF; border: 1px solid #394150; border-radius: 5px;"
-                        onfocus="this.style.borderColor = '#4d4adc'; this.style.borderWidth = '2px';"
-                        onblur="this.style.borderColor = '#394150'; this.style.borderWidth = '1px';"  rows="12">{{ $taraneem->lyrics }}</textarea>
+                        <x-input-label for="lyrics" value="Lyrics"/>
+                        <textarea id="lyrics" name="lyrics" class="mt-1 block w-full h-40 resize-y p-2 rounded-md border-gray-300 dark:bg-gray-900 dark:text-gray-100" rows="12" required>{{ old('lyrics', $taraneem->lyrics) }}</textarea>
+                        <x-input-error :messages="$errors->get('lyrics')" class="mt-2" />
 
                         <div class="flex justify-end mt-4">
                             <x-primary-button class="ms-3">

@@ -1,89 +1,62 @@
-document.getElementById("menu").style.display = "none";
+document.addEventListener('DOMContentLoaded', function () {
+    var input = document.getElementById('browse-filter');
+    var filterButtons = Array.from(document.querySelectorAll('[data-letter]'));
+    var items = Array.from(document.querySelectorAll('[data-library-item]'));
+    var count = document.getElementById('library-count');
+    var noResults = document.getElementById('library-no-results');
+    var activeLetter = 'all';
 
-function toggleMenu() {
-var menu = document.getElementById("menu");
-if (menu.style.display === "block") {
-    menu.style.display = "none";
-} else {
-    menu.style.display = "block";
-}
-}
-
-// Add event listener to close menu when clicking outside the menu
-document.addEventListener('click', function(event) {
-var menu = document.getElementById("menu");
-var menuIcon = document.getElementById("menu-icon");
-
-// Check if the click is outside the menu and the menu is open
-if (!menu.contains(event.target) && event.target !== menuIcon && menu.style.display === "block") {
-    menu.style.display = "none";
-}
-});
-
-// Prevent clicks inside the menu from closing it
-document.getElementById("menu").addEventListener('click', function(event) {
-event.stopPropagation();
-});
-
-function showAll() {
-    removeLineBreaks()
-    var taraneemList = document.getElementById("taraneemList").getElementsByTagName("a");
-
-    for (var i = 0; i < taraneemList.length; i++) {
-        taraneemList[i].style.display = "block";
+    function firstLetter(title) {
+        var first = title.trim().normalize('NFD').replace(/[\u0300-\u036f]/g, '').charAt(0).toLocaleUpperCase('en');
+        return /^[A-Z]$/.test(first) ? first : 'other';
     }
-    reorderDisplayBlock()
 
-}
+    function updateLibrary() {
+        var term = input ? input.value.trim().toLocaleLowerCase() : '';
+        var visibleCount = 0;
 
-function filterByLetter(letter) {
-    removeLineBreaks()
-    var taraneemList = document.getElementById("taraneemList").getElementsByTagName("a");
+        items.forEach(function (item) {
+            var titleElement = item.querySelector('.library-item-title');
+            var title = (titleElement ? titleElement.textContent : item.textContent).trim().toLocaleLowerCase();
+            var matchesTerm = title.includes(term);
+            var matchesLetter = activeLetter === 'all' || firstLetter(title) === activeLetter;
+            var visible = matchesTerm && matchesLetter;
 
-    for (var i = 0; i < taraneemList.length; i++) {
-        var title = taraneemList[i].innerText.toUpperCase();
+            item.hidden = !visible;
 
-        if (letter === '#') {
-            if (/^[^A-Z]/.test(title)) {
-                taraneemList[i].style.display = "block";
-            } else {
-                taraneemList[i].style.display = "none";
+            if (visible) {
+                visibleCount += 1;
             }
-        } else if (title.startsWith(letter)) {
-            taraneemList[i].style.display = "block";
-        } else {
-            taraneemList[i].style.display = "none";
+        });
+
+        if (count) {
+            count.textContent = visibleCount === 1 ? '1 hymn found' : visibleCount + ' hymns found';
+        }
+
+        if (noResults) {
+            noResults.hidden = visibleCount > 0;
         }
     }
-    reorderDisplayBlock()
-}
 
-function reorderDisplayBlock() {
-    var taraneemList = document.getElementById("taraneemList");
-    var displayBlockItems = [];
-  
-    // Separate display block and display none items
-    for (var i = 0; i < taraneemList.children.length; i++) {
-      var item = taraneemList.children[i];
-      if (item.style.display === "block") {
-        displayBlockItems.push(item);
-        item.style.display = "none"; // Hide the item for now
-      }
+    if (input) {
+        input.addEventListener('input', updateLibrary);
+        input.form.addEventListener('submit', function (event) {
+            event.preventDefault();
+        });
     }
-  
-    // Append display block items to the top with line breaks
-    displayBlockItems.forEach(function (item) {
-      taraneemList.insertBefore(item, taraneemList.firstChild);
-      taraneemList.insertBefore(document.createElement('br'), taraneemList.firstChild); // Add line break
-      item.style.display = "block"; // Show the item
+
+    filterButtons.forEach(function (button) {
+        button.addEventListener('click', function () {
+            activeLetter = button.dataset.letter;
+
+            filterButtons.forEach(function (filterButton) {
+                filterButton.classList.toggle('is-active', filterButton === button);
+                filterButton.setAttribute('aria-pressed', String(filterButton === button));
+            });
+
+            updateLibrary();
+        });
     });
-  }
-  
-  function removeLineBreaks() {
-    var taraneemList = document.getElementById("taraneemList");
-    var lineBreaks = taraneemList.getElementsByTagName("br");
-  
-    for (var i = 0; i < lineBreaks.length; i++) {
-      lineBreaks[i].parentNode.removeChild(lineBreaks[i]);
-    }
-  }
+
+    updateLibrary();
+});

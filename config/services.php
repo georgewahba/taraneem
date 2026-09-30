@@ -25,6 +25,11 @@ return [
         'token' => env('POSTMARK_TOKEN'),
     ],
 
+    'mailtrap' => [
+        'token' => env('MAILTRAP_API_KEY'),
+        'suggestions_recipient' => env('SUGGESTIONS_EMAIL', 'info@wahba.nl'),
+    ],
+
     'ses' => [
         'key' => env('AWS_ACCESS_KEY_ID'),
         'secret' => env('AWS_SECRET_ACCESS_KEY'),

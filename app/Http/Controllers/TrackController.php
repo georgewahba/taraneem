@@ -24,32 +24,31 @@ class TrackController extends Controller
         return view('tracks.create');
     }
 
-public function store(Request $request)
-{
-    try {
+    public function store(Request $request)
+    {
         $validated = $request->validate([
             'title' => 'required|string|max:255',
             'artist' => 'nullable|string|max:255',
-            'file' => 'required|mimes:mp3,wav,ogg|max:20000',
+            'file' => 'required|file|mimes:mp3,wav,ogg|max:20000',
         ]);
+
         $filePath = $request->file('file')->store('tracks', 'public');
+
         Track::create([
-            'title' => $request->title,
-            'artist' => $request->artist,
+            'title' => $validated['title'],
+            'artist' => $validated['artist'] ?? null,
             'file' => $filePath,
         ]);
-        return redirect()->route('tracks.index')->with('success', 'Track succesvol toegevoegd!');
-    } catch (\Exception $e) {
-        dd($e->getMessage(), $e->getTraceAsString());
+
+        return redirect()->route('tracks.index')->with('success', 'Track added successfully.');
     }
-}
 
 
     public function destroy(Track $track)
     {
         Storage::disk('public')->delete($track->file);
         $track->delete();
-        return redirect()->route('tracks.index')->with('success', 'Track verwijderd!');
+        return redirect()->route('tracks.index')->with('success', 'Track deleted.');
     }
 
     public function player()
@@ -72,7 +71,7 @@ public function update(Request $request, \App\Models\Track $track)
 
     $track->update($validated);
 
-    return redirect()->route('tracks.index')->with('success', 'Track bijgewerkt!');
+    return redirect()->route('tracks.index')->with('success', 'Track updated.');
 }
 
 }

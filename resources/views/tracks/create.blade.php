@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-            {{ __('Nieuwe track uploaden') }}
+            {{ __('Upload a track') }}
         </h2>
     </x-slot>
 
@@ -22,20 +22,20 @@
                     <form action="{{ route('tracks.store') }}" method="POST" enctype="multipart/form-data" class="space-y-4">
                         @csrf
                         <div>
-                            <x-input-label for="title" :value="__('Titel')" />
-                            <x-text-input id="title" name="title" type="text" class="mt-1 block w-full" required />
+                            <x-input-label for="title" :value="__('Title')" />
+                            <x-text-input id="title" name="title" type="text" class="mt-1 block w-full" :value="old('title')" maxlength="255" required />
                         </div>
                         <div>
-                            <x-input-label for="artist" :value="__('Artiest (optioneel)')" />
-                            <x-text-input id="artist" name="artist" type="text" class="mt-1 block w-full" />
+                            <x-input-label for="artist" :value="__('Artist (optional)')" />
+                            <x-text-input id="artist" name="artist" type="text" class="mt-1 block w-full" :value="old('artist')" maxlength="255" />
                         </div>
-                        <diav>
-                            <x-input-label for="file" :value="__('MP3 bestand')" />
-                            <input type="file" name="file" id="file" accept="audio/*" class="mt-1 block w-full border border-gray-300 dark:border-gray-700 rounded p-2 bg-gray-100 dark:bg-gray-900 text-gray-800 dark:text-gray-100" required />
-                        </diav>
+                        <div>
+                            <x-input-label for="file" :value="__('Audio file (MP3, WAV or OGG)')" />
+                            <input type="file" name="file" id="file" accept=".mp3,.wav,.ogg" class="mt-1 block w-full border border-gray-300 dark:border-gray-700 rounded p-2 bg-gray-100 dark:bg-gray-900 text-gray-800 dark:text-gray-100" required />
+                        </div>
                         <div class="flex justify-end">
                             <x-primary-button>
-                                {{ __('Uploaden') }}
+                                {{ __('Upload') }}
                             </x-primary-button>
                         </div>
                     </form>

@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use Exception;
+use Throwable;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Mailtrap\MailtrapClient;
@@ -18,46 +18,40 @@ class SuggestionsController extends Controller
 
     public function store(Request $request)
     {
-        $request->validate([
-            'titel'  => 'required',
-            'lyrics' => 'required',
+        $validated = $request->validate([
+            'titel'  => 'required|string|max:255',
+            'lyrics' => 'required|string|max:200000',
         ]);
 
-        // Opslaan in DB
         $suggestion = new \App\Models\Sugestion();
-        $suggestion->titel  = $request->titel;
-        $suggestion->lyrics = $request->lyrics;
+        $suggestion->titel  = $validated['titel'];
+        $suggestion->lyrics = $validated['lyrics'];
         $suggestion->save();
 
-        toastr()->success('Jouw suggestie is opgeslagen. Bedankt voor je bijdrage!');
+        $apiKey = config('services.mailtrap.token');
+        $body = 'A new hymn suggestion is ready to review: ' . route('suggestedtaraneem');
 
-        // === Mailtrap API key send ===
-        $apiKey = env('MAILTRAP_API_KEY');
+        if ($apiKey && !app()->environment('testing')) {
+            try {
+                $client = MailtrapClient::initSendingEmails(apiKey: $apiKey);
+                $email = (new MailtrapEmail())
+                    ->from(new Address(config('mail.from.address'), config('mail.from.name')))
+                    ->to(new Address(config('services.mailtrap.suggestions_recipient')))
+                    ->subject('New hymn suggestion')
+                    ->text($body);
 
-        $body = 'Er is een nieuwe suggestie toegevoegd. Ga naar https://www.taraneem.nl/suggestedtaraneem de website om het te bekijken.';
-
-        try {
-            // Initialize Mailtrap client
-            $client = MailtrapClient::initSendingEmails(apiKey: $apiKey);
-
-            // Create and send email
-            $email = (new MailtrapEmail())
-                ->from(new Address(config('mail.from.address'), config('mail.from.name')))
-                ->to(new Address('info@wahba.nl'))
-                ->subject('Nieuwe suggestie toegevoegd')
-                ->text($body);
-
-            $client->send($email);
-
-            return redirect("/");
-        } catch (Exception $e) {
-            return 'Error: ' . $e->getMessage();
+                $client->send($email);
+            } catch (Throwable $e) {
+                report($e);
+            }
         }
+
+        return redirect()->route('home')->with('success', 'Your suggestion has been received. Thank you!');
     }
 
     public function suggestedtaraneem()
     {
-        $suggestions = \App\Models\Sugestion::all();
+        $suggestions = \App\Models\Sugestion::latest()->get();
         return view('suggestedtaraneem', compact('suggestions'));
     }
 

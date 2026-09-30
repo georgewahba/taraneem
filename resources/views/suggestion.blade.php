@@ -1,54 +1,46 @@
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="csrf-token" content="{{ csrf_token() }}">
+@extends('layouts.public')
 
-    <title>Suggestions</title>
-    <link rel="icon" type="image/png" href="{{ asset('images/mini-logo.png') }}">
-    <meta name="apple-mobile-web-app-capable" content="yes" />
+@section('title', 'Share a suggestion | Taraneem')
+@section('meta-description', 'Help the Taraneem collection grow with hymn lyrics or a correction.')
 
-    <!-- Fonts -->
-    <link rel="preconnect" href="https://fonts.bunny.net">
-    <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
-
-    <!-- Scripts -->
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
-
-    <style>
-        body {
-            background-color: #121826
-        }
-    </style>    
-</head> 
-<body>
-    <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
-                <div class="p-6 text-gray-900 dark:text-gray-100">
-                    <h2 class="text-lg font-medium text-gray-900 dark:text-gray-100">
-                        {{ __('Doe hier een suggestie') }}
-                    </h2>
-                    <h3>!! Stuur de volledige tekst uitgetypt, geen linkjes AUB !!</h3>
-                    <form action="/storesuggestion" method="POST">
-                        @csrf
-                        <x-input-label for="titel" value="Titel:"/>
-                        <x-text-input id="titel" name="titel" type="text" class="mt-1 block w-full" />
-
-                        <x-input-label for="lyrics" value="Text:"/>
-                        <textarea id="lyrics" name="lyrics" class="mt-1 block w-full h-40 resize-y p-2" style="background-color: #121826; color: #FFFFFF; border: 1px solid #394150; border-radius: 5px;"
-                        onfocus="this.style.borderColor = '#4d4adc'; this.style.borderWidth = '2px';"
-                        onblur="this.style.borderColor = '#394150'; this.style.borderWidth = '1px';"  rows="12"></textarea>
-                        <div class="flex justify-between mt-4"> <!-- Changed justify-end to justify-between -->
-                            <x-primary-button class="ms-3">
-                                <a href="/">terug naar home</a> <!-- Corrected the typo in "naar" -->
-                            </x-primary-button>
-                            <x-primary-button class="ms-3">
-                                Versturen
-                            </x-primary-button>                            
-                        </div>
-                    </form>
-                </div>
-            </div>
+@section('content')
+    <section class="form-intro" aria-labelledby="suggestion-title">
+        <div class="site-shell">
+            <p class="eyebrow">Better together</p>
+            <h1 id="suggestion-title">Share a hymn that belongs here.</h1>
+            <p>A new hymn or a small correction can mean a lot to someone.</p>
         </div>
-    </div>
-</body>
+    </section>
+
+    <section class="form-section">
+        <div class="site-shell">
+            <form class="contribution-form" action="{{ route('storesuggestion') }}" method="POST">
+                @csrf
+
+                <div class="form-field">
+                    <label for="titel">Title</label>
+                    <input id="titel" name="titel" type="text" value="{{ old('titel') }}" maxlength="255" required>
+                    @error('titel')
+                        <span class="form-error">{{ $message }}</span>
+                    @enderror
+                </div>
+
+                <div class="form-field">
+                    <label for="lyrics">Lyrics</label>
+                    <textarea id="lyrics" name="lyrics" required>{{ old('lyrics') }}</textarea>
+                    @error('lyrics')
+                        <span class="form-error">{{ $message }}</span>
+                    @enderror
+                </div>
+
+                <div class="form-actions">
+                    <p class="form-note">Thank you for helping our collection grow.</p>
+                    <button class="button button-primary" type="submit">
+                        <span>Send suggestion</span>
+                        <i class="fa-solid fa-arrow-right" aria-hidden="true"></i>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </section>
+@endsection

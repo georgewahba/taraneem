@@ -1,129 +1,82 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Muziekspeler</title>
-    <link rel="icon" type="image/png" href="{{ asset('images/mini-logo.png') }}" sizes="32x32">
-    <meta name="apple-mobile-web-app-capable" content="yes" />
+@extends('layouts.public')
 
-    <link rel="stylesheet" href="{{ asset('css/browse.css') }}">
-    <link rel="stylesheet" href="{{ asset('css/tracks.css') }}">
+@section('title', 'Music | Taraneem')
+@section('meta-description', 'Listen to music from the Taraneem collection.')
+@section('body-class', 'player-page')
 
-</head>
-<body>
-    <div class="menu-icon" id="menu-icon" onclick="toggleMenu()">&#9776;</div>
-    <div class="menu" id="menu">
-        <ul>
-            <li><a href="/">Home</a></li>
-            <li><a href="/browseall">Bekijk Alle Taraneem</a></li> 
-            <li><a href="/public-musicplayer">Muziekspeler</a></li>
-        </ul>
-    </div>
+@section('content')
+    @php($firstTrack = $tracks->first())
 
-    <h1 style="text-align:center;margin-top:2rem;margin-bottom:1.2rem;">Muziekspeler</h1>
-    <div class="musicplayer-main">
-        <!-- Sidebar met zoekbox en tracks -->
-        <aside class="musicplayer-sidebar">
-            <h2>Alle tracks</h2>
-            <div class="sidebar-searchbox">
-                <input
-                    type="text"
-                    id="track-search"
-                    placeholder="Zoek op titel of artiest…"
-                    autocomplete="off"
-                >
-            </div>
-            <div class="tracklist" id="tracklist">
-                @foreach($tracks as $i => $track)
-                    <button class="tracklist-btn{{ $i === 0 ? ' selected' : '' }}"
-                        data-index="{{ $i }}"
-                        data-title="{{ strtolower($track->title) }}"
-                        data-artist="{{ strtolower($track->artist) }}"
-                        data-file="{{ asset('storage/' . $track->file) }}"
-                    >
-                        <div>
-                            <div class="tracklist-title">{{ $track->title }}</div>
-                            @if($track->artist)
-                                <div class="tracklist-artist">{{ $track->artist }}</div>
-                            @endif
-                        </div>
-                    </button>
-                @endforeach
-            </div>
-        </aside>
+    <section class="player-intro" aria-labelledby="player-title">
+        <div class="site-shell">
+            <p class="eyebrow">Music</p>
+            <h1 id="player-title">Let the music stay with you.</h1>
+            <p>Melodies for quiet moments and voices lifted together.</p>
+        </div>
+    </section>
 
-        <!-- Player card rechts -->
-        <main class="musicplayer-content">
-            @php
-                $first = $tracks->first();
-            @endphp
-            <div class="player-card" id="player-card">
-                <div class="player-cover">
-                    <img src="{{ asset('images/mini-logo.png') }}" alt="cover">
+    <section class="site-shell" aria-label="Music player">
+        <div class="player-layout">
+            <aside class="track-browser">
+                <div class="track-browser-header">
+                    <h2>All tracks</h2>
+                    <label class="track-search" for="track-search">
+                        <i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i>
+                        <span class="sr-only">Search by title or artist</span>
+                        <input id="track-search" type="search" autocomplete="off" placeholder="Search by title or artist">
+                    </label>
                 </div>
-                <div class="player-title" id="player-title">{{ $first?->title ?? '-' }}</div>
-                <div class="player-artist" id="player-artist">{{ $first?->artist ?? '' }}</div>
-                <audio class="player-audio" id="player-audio" controls preload="none">
-                    @if($first)
-                        <source src="{{ asset('storage/' . $first->file) }}" type="audio/mpeg">
-                    @endif
-                    Je browser ondersteunt geen audio.
-                </audio>
-            </div>
-        </main>
-    </div>
-    <script>
-        // Menu toggle
-        function toggleMenu() {
-            const menu = document.getElementById('menu');
-            menu.style.display = (menu.style.display === 'block') ? 'none' : 'block';
-        }
-        document.addEventListener('click', function(event) {
-            const menu = document.getElementById('menu');
-            const icon = document.getElementById('menu-icon');
-            if (!menu.contains(event.target) && event.target !== icon) {
-                menu.style.display = 'none';
-            }
-        });
 
-        document.addEventListener('DOMContentLoaded', function() {
-            const trackBtns = document.querySelectorAll('.tracklist-btn');
-            const title = document.getElementById('player-title');
-            const artist = document.getElementById('player-artist');
-            const audio = document.getElementById('player-audio');
+                <div class="track-list" id="tracklist">
+                    @forelse ($tracks as $index => $track)
+                        <button
+                            class="track-list-button {{ $index === 0 ? 'is-selected' : '' }}"
+                            type="button"
+                            data-track-button
+                            data-title="{{ $track->title }}"
+                            data-artist="{{ $track->artist ?? '' }}"
+                            data-file="{{ asset('storage/' . $track->file) }}"
+                            aria-pressed="{{ $index === 0 ? 'true' : 'false' }}"
+                        >
+                            <span class="track-list-number">{{ str_pad((string) ($index + 1), 2, '0', STR_PAD_LEFT) }}</span>
+                            <span>
+                                <span class="track-list-title">{{ $track->title }}</span>
+                                @if ($track->artist)
+                                    <span class="track-list-artist">{{ $track->artist }}</span>
+                                @endif
+                            </span>
+                            <i class="fa-solid fa-play" aria-hidden="true"></i>
+                        </button>
+                    @empty
+                        <p class="track-empty">No tracks have been added yet.</p>
+                    @endforelse
+                    <p class="track-empty" id="track-no-results" hidden>No tracks found.</p>
+                </div>
+            </aside>
 
-            // Player logic
-            trackBtns.forEach(btn => {
-                btn.addEventListener('click', function() {
-                    trackBtns.forEach(b => b.classList.remove('selected'));
-                    btn.classList.add('selected');
-                    title.textContent = btn.getAttribute('data-title');
-                    artist.textContent = btn.getAttribute('data-artist');
-                    audio.pause();
-                    audio.currentTime = 0;
-                    audio.querySelector('source').setAttribute('src', btn.getAttribute('data-file'));
-                    audio.load();
-                });
-            });
+            @if ($firstTrack)
+                <section class="now-playing" aria-live="polite">
+                    <div class="now-playing-mark">
+                        <img src="{{ asset('images/mini-logo.png') }}" alt="">
+                    </div>
+                    <p class="eyebrow">Now selected</p>
+                    <h2 id="player-track-title">{{ $firstTrack->title }}</h2>
+                    <p class="now-playing-artist" id="player-track-artist">{{ $firstTrack->artist }}</p>
+                    <audio id="player-audio" controls preload="metadata">
+                        <source src="{{ asset('storage/' . $firstTrack->file) }}">
+                        Your browser does not support audio playback.
+                    </audio>
+                    <p class="player-error" id="player-error" role="status" hidden>This track could not be loaded. Please choose another track.</p>
+                </section>
+            @else
+                <section class="player-empty-state">
+                    <p>The first tracks are on their way.</p>
+                </section>
+            @endif
+        </div>
+    </section>
+@endsection
 
-            // SEARCH
-            const searchInput = document.getElementById('track-search');
-            if (searchInput) {
-                searchInput.addEventListener('keyup', function() {
-                    const term = searchInput.value.trim().toLowerCase();
-                    trackBtns.forEach(btn => {
-                        const title = btn.getAttribute('data-title');
-                        const artist = btn.getAttribute('data-artist');
-                        if (title.includes(term) || artist.includes(term)) {
-                            btn.style.display = '';
-                        } else {
-                            btn.style.display = 'none';
-                        }
-                    });
-                });
-            }
-        });
-    </script>
-</body>
-</html>
+@push('scripts')
+    <script src="{{ asset('js/player.js') }}"></script>
+@endpush

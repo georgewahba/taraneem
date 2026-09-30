@@ -9,7 +9,10 @@ class HomeController extends Controller
 {
     public function index()
     {
-        $taraneem = Taraneem::all();
+        $taraneem = Taraneem::query()
+            ->orderBy('titel')
+            ->get();
+
         return view('home', compact('taraneem'));
     }
 }

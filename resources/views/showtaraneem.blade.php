@@ -1,77 +1,56 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="apple-mobile-web-app-capable" content="yes" />
-
-    <title>{{$taraneem->titel}}</title>
-    <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            // Create a link element
-            var link = document.createElement('link');
-            link.rel = 'stylesheet';
-
-            // Check if the toggle switch was checked
-            const themeChecked = sessionStorage.getItem('themeChecked');
-        
-            if (themeChecked === 'true') {
-                // Set the href attribute to the theme.css path
-                link.href = "{{ asset('css/themes/theme.css') }}";
-
-                // Define an array of background image paths
-                const backgrounds = [
-                    'theme-1.jpg',
-                    'theme-2.jpg',
-                    'theme-3.jpg',
-                    'theme-4.jpg',
-                    'theme-5.jpg',
-                    'theme-6.jpg',
-                    'theme-7.jpg',
-                    'theme-8.jpg',
-                    'theme-9.jpg',
-                    'theme-10.jpg',
-                    'theme-11.jpg',
-                    'theme-12.jpg',
-                    'theme-13.jpg',
-                    'theme-14.jpg',
-                    'theme-15.jpg',
-                    'theme-16.jpg',
-                    'theme-17.jpg',
-                    'theme-18.jpg',
-                ];
-        
-                // Generate a random index to select a background image from the array
-                const randomIndex = Math.floor(Math.random() * backgrounds.length);
-        
-                // Set the randomly selected background image class
-                document.body.classList.add('theme-' + (randomIndex + 1));
-            } else {
-                // Set the href attribute to the theme-basic.css path
-                link.href = "{{ asset('css/themes/theme-basic.css') }}";
-            }
-
-            // Append the link element to the head of the document
-            document.head.appendChild(link);
-        });
-    </script>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#0a2117">
+    <title>{{ $taraneem->titel }} | Taraneem</title>
+    <link rel="icon" type="image/png" href="{{ asset('images/mini-logo.png') }}">
+    <link rel="preconnect" href="https://fonts.bunny.net">
+    <link href="https://fonts.bunny.net/css?family=manrope:400,500,600,700,800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link rel="stylesheet" href="{{ asset('css/site.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/presentation.css') }}">
 </head>
-<body>
-    <div id="filter">
-        <p>Click anywhere on the screen to go fullscreen</p>
-    </div>
-    
-    <p id="text">
-        {{$taraneem->lyrics}}
-    </p>
-    <div>
-        <p id="visibletext"></p>
-    </div>
-    
-    <div id="pageInfo"></div>
-    
-    <div id="imageDiv"></div>
+<body class="presenter-page">
+    <main class="presentation-shell">
+        <header class="presenter-header">
+            <a class="presenter-close" href="{{ route('home') }}" aria-label="Close presentation" title="Close presentation">
+                <i class="fa-solid fa-arrow-left" aria-hidden="true"></i>
+            </a>
 
-<script src="{{ asset('js/show.js') }}"></script>
+            <div class="presenter-brand">
+                <img src="{{ asset('images/mini-logo.png') }}" alt="">
+                <span>{{ $taraneem->titel }}</span>
+            </div>
+
+            <button class="presenter-fullscreen" id="fullscreen-toggle" type="button" aria-label="Enter fullscreen" title="Enter fullscreen">
+                <i class="fa-solid fa-expand" aria-hidden="true"></i>
+            </button>
+        </header>
+
+        <section class="presenter-stage" aria-label="Hymn presentation">
+            <div class="presenter-count" id="pageInfo" aria-live="polite"></div>
+            <div class="presenter-content">
+                <article class="presenter-lyrics" id="visibletext" dir="auto" aria-live="polite" aria-atomic="true"></article>
+                <div class="presenter-ending-mark" id="imageDiv" hidden>
+                    <img src="{{ asset('images/mini-logo.png') }}" alt="Taraneem, end of hymn">
+                </div>
+            </div>
+            <p class="presenter-status" id="presenter-status" role="status" hidden></p>
+        </section>
+
+        <nav class="presenter-controls" aria-label="Presentation controls">
+            <button id="previous-slide" type="button" aria-label="Previous slide" title="Previous slide">
+                <i class="fa-solid fa-chevron-left" aria-hidden="true"></i>
+            </button>
+            <button id="next-slide" type="button" aria-label="Next slide" title="Next slide">
+                <i class="fa-solid fa-chevron-right" aria-hidden="true"></i>
+            </button>
+        </nav>
+    </main>
+
+    <script id="lyric-data" type="application/json">@json($taraneem->lyrics)</script>
+    <script src="{{ asset('js/show.js') }}"></script>
 </body>
 </html>

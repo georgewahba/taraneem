@@ -2,12 +2,10 @@
 
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\SuggestionsController; 
+use App\Http\Controllers\SuggestionsController;
 use App\Http\Controllers\TaraneemController;
 use App\Http\Controllers\TrackController;
-use App\Models\Taraneem;
 use Illuminate\Support\Facades\Route;
-use Symfony\Component\Console\Completion\Suggestion;
 
 /*
 |--------------------------------------------------------------------------
@@ -33,20 +31,20 @@ Route::get('/taraneem', [TaraneemController::class, 'index'])->name('taraneem')-
 
 Route::get('/addtaraneem', function () {
     return view('addtaraneem');
-})->middleware(['auth', 'verified']);
+})->middleware(['auth', 'verified'])->name('taraneem.create');
 
 Route::get('/edittaraneem/{taraneem}', [TaraneemController::class, 'edit'])->name('taraneem.edit')->middleware(['auth', 'verified']);
-Route::get('/deletetaraneem/{taraneem}', [TaraneemController::class, 'destroy'])->name('taraneem.destroy')->middleware(['auth', 'verified']);
-Route::post('/storetaraneem', [TaraneemController::class, 'store'])->name('storetaraneem');
+Route::delete('/deletetaraneem/{taraneem}', [TaraneemController::class, 'destroy'])->name('taraneem.destroy')->middleware(['auth', 'verified']);
+Route::post('/storetaraneem', [TaraneemController::class, 'store'])->name('storetaraneem')->middleware(['auth', 'verified']);
 Route::post('/updatetaraneem/{taraneem}', [TaraneemController::class, 'update'])->name('taraneem.update')->middleware(['auth', 'verified']);
 
 Route::get('/browseall', [TaraneemController::class, 'browseall'])->name('browseall');
 
 Route::get('/suggestion', [SuggestionsController::class, 'index'])->name('suggestion');
-Route::post('/storesuggestion', [SuggestionsController::class, 'store'])->name('storesuggestion');
+Route::post('/storesuggestion', [SuggestionsController::class, 'store'])->name('storesuggestion')->middleware('throttle:10,1');
 Route::get('/suggestedtaraneem', [SuggestionsController::class, 'suggestedtaraneem'])->name('suggestedtaraneem')->middleware(['auth', 'verified']);
 Route::get('/showsuggested/{suggestion}', [SuggestionsController::class, 'showsuggested'])->name('showsuggested')->middleware(['auth', 'verified']);
-Route::get('/deletesuggested/{suggestion}', [SuggestionsController::class, 'destroy'])->name('suggestion.destroy')->middleware(['auth', 'verified']);
+Route::delete('/deletesuggested/{suggestion}', [SuggestionsController::class, 'destroy'])->name('suggestion.destroy')->middleware(['auth', 'verified']);
 
 Route::get('/player', [TrackController::class, 'player'])->name('tracks.player');
 
@@ -60,7 +58,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/tracks', [TrackController::class, 'store'])->name('tracks.store');
     Route::delete('/tracks/{track}', [TrackController::class, 'destroy'])->name('tracks.destroy');
     Route::get('/tracks/{track}/edit', [TrackController::class, 'edit'])->name('tracks.edit');
-    Route::post('/tracks/{track}', [TrackController::class, 'update'])->name('tracks.update');
+    Route::put('/tracks/{track}', [TrackController::class, 'update'])->name('tracks.update');
 
 
 });

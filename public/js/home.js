@@ -1,77 +1,58 @@
-function filter_pictures() {
-    var $filter = document.getElementById('filter').value.trim().toLowerCase();
-    var $taraneemList = document.getElementById('taraneemList');
+document.addEventListener('DOMContentLoaded', function () {
+    var input = document.getElementById('filter');
+    var panel = document.getElementById('taraneemList');
+    var clearButton = document.getElementById('clear-search');
+    var results = Array.from(document.querySelectorAll('[data-search-result]'));
+    var count = document.getElementById('search-result-count');
+    var noResults = document.getElementById('search-no-results');
 
-    // Hide all items initially
-    for (var i = 0; i < $taraneemList.children.length; i++) {
-        $taraneemList.children[i].style.display = 'none';
+    if (!input || !panel) {
+        return;
     }
 
-    if ($filter === '') {
-        // If the filter is empty, hide the list
-        $taraneemList.style.display = 'none';
-    } else {
-        // Show the list
-        $taraneemList.style.display = 'block';
+    function updateSearch() {
+        var term = input.value.trim().toLocaleLowerCase();
+        var visibleCount = 0;
 
-        // Filter and display matching results
-        for (var i = 0; i < $taraneemList.children.length; i++) {
-            var link = $taraneemList.children[i];
-            var linkText = link.textContent.toLowerCase();
-            if (linkText.includes($filter)) {
-                link.style.display = 'block';
+        results.forEach(function (result) {
+            var matches = result.textContent.toLocaleLowerCase().includes(term);
+            result.hidden = !matches;
+
+            if (matches) {
+                visibleCount += 1;
             }
+        });
+
+        panel.hidden = term.length === 0;
+        clearButton.hidden = term.length === 0;
+
+        if (term.length > 0 && count) {
+            count.textContent = visibleCount === 1 ? '1 hymn found' : visibleCount + ' hymns found';
+        }
+
+        if (noResults) {
+            noResults.hidden = visibleCount > 0 || term.length === 0;
         }
     }
-}
 
-document.getElementById("menu").style.display = "none";
+    input.addEventListener('input', updateSearch);
 
-function toggleMenu() {
-var menu = document.getElementById("menu");
-if (menu.style.display === "block") {
-    menu.style.display = "none";
-} else {
-    menu.style.display = "block";
-}
-}
+    input.form.addEventListener('submit', function (event) {
+        event.preventDefault();
+    });
 
-// Add event listener to close menu when clicking outside the menu
-document.addEventListener('click', function(event) {
-var menu = document.getElementById("menu");
-var menuIcon = document.getElementById("menu-icon");
+    input.addEventListener('keydown', function (event) {
+        if (event.key === 'Escape') {
+            input.value = '';
+            updateSearch();
+        }
+    });
 
-// Check if the click is outside the menu and the menu is open
-if (!menu.contains(event.target) && event.target !== menuIcon && menu.style.display === "block") {
-    menu.style.display = "none";
-}
-});
+    clearButton.addEventListener('click', function () {
+        input.value = '';
+        updateSearch();
+        input.focus();
+    });
 
-// Prevent clicks inside the menu from closing it
-document.getElementById("menu").addEventListener('click', function(event) {
-event.stopPropagation();
-});
-
-
-document.addEventListener('DOMContentLoaded', function() {
-    // Get the toggle switch element
-    const themeCheckbox = document.getElementById('theme-checkbox');
-
-    // Function to handle when the toggle switch is changed
-    function handleToggleChange() {
-        // Save the state of the toggle switch in session storage
-        sessionStorage.setItem('themeChecked', themeCheckbox.checked);
-    }
-
-    // Add event listener for the change event on the toggle switch
-    themeCheckbox.addEventListener('change', handleToggleChange);
-
-    // Check if there's a saved state in sessionStorage and update the toggle accordingly
-    const storedThemeChecked = sessionStorage.getItem('themeChecked');
-    if (storedThemeChecked !== null) {
-        themeCheckbox.checked = storedThemeChecked === 'true';
-    }
-
-    // Call the function initially to save the initial state (if any)
-    handleToggleChange();
+    updateSearch();
 });

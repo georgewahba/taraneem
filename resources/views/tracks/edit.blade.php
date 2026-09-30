@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-            {{ __('Track bewerken') }}
+            {{ __('Edit track') }}
         </h2>
     </x-slot>
 
@@ -19,23 +19,23 @@
                         </div>
                     @endif
 
-                    <form action="{{ route('tracks.update', $track) }}" method="POST" class="space-y-4">
-                        @csrf
-                        @method('POST')
+                        <form action="{{ route('tracks.update', $track) }}" method="POST" class="space-y-4">
+                            @csrf
+                        @method('PUT')
                         <div>
-                            <x-input-label for="title" :value="__('Titel')" />
+                            <x-input-label for="title" :value="__('Title')" />
                             <x-text-input id="title" name="title" type="text" class="mt-1 block w-full" value="{{ old('title', $track->title) }}" required />
                         </div>
                         <div>
-                            <x-input-label for="artist" :value="__('Artiest (optioneel)')" />
+                            <x-input-label for="artist" :value="__('Artist (optional)')" />
                             <x-text-input id="artist" name="artist" type="text" class="mt-1 block w-full" value="{{ old('artist', $track->artist) }}" />
                         </div>
                         <div class="flex justify-between">
                             <a href="{{ route('tracks.index') }}" class="inline-flex items-center px-4 py-2 bg-gray-200 dark:bg-gray-700 border border-transparent rounded-md font-semibold text-xs text-gray-700 dark:text-gray-300 uppercase tracking-widest hover:bg-gray-300 dark:hover:bg-gray-600 transition">
-                                Annuleren
+                                Cancel
                             </a>
                             <x-primary-button>
-                                {{ __('Opslaan') }}
+                                {{ __('Save') }}
                             </x-primary-button>
                         </div>
                     </form>
